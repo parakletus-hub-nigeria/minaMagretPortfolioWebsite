@@ -91,7 +91,7 @@ const HomePage:React.FC = () => {
 
             <div className='absolute bottom-[20%] left-4 md:-left-0 md:bottom-0 md:basis-2/3 md:relative md:h-full flex justify-center items-center'>
               <span className='flex relative flex-col gap-12 md:-left-20'>
-                <h2 className='font-normal text-white text-4xl'>Home</h2>
+                <h2 className='font-normal text-white text-4xl'>Meet Mina Margaret Ogbanga, PhD</h2>
                 <Link
                   to={`/about/profile`}
                   className='font-bold text-white text-2xl flex items-center capitalize bg-[#49A3AC] py-3 px-8 rounded-md'

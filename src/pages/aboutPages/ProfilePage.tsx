@@ -76,8 +76,7 @@ const ProfilePage: React.FC = () => {
         </picture>
         <div>
           <span className='flex flex-col gap-2 pb-6 capitalize text-left font-bold text-white border-b border-white'>
-            <h2 className='text-2xl'>About Me</h2>
-            <h1 className='text-4xl'>Profile</h1>
+           <h1 className='text-4xl'>Profile</h1>
           </span>
 
           <div className='flex flex-col gap-8 pt-6'>
