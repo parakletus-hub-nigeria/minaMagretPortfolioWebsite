@@ -49,13 +49,7 @@ export const fellowshipsAndSchloarshipPageLoader: LoaderFunction = async () => {
 
 
 const FellowShipSchloarshipPage:React.FC = () => {
-    const fellowshipData = [
-        "Ford Global Fellowship (2021) by Ford Foundation",
-        "Oxford-Commonwealth Scholarship (2021) by the Commonwealth Scholarships Commission (CSC) and the University of Oxford",
-        "Developing Solutions Scholarship (2020) by the University of Nottingham, UK",
-        "Deutsche Gesellschaft für Internationale Zusammenarbeit (GiZ)’s Masters in Managing Peace and Security in Africa (MPSA) Scholarship, 2018",
-        "Mandela Washington Fellowship (2016) by the United States Department of States"
-      ];
+  
   
       const {authorName} = useAuthorContext();
 

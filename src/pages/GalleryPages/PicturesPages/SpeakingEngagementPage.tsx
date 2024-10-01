@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-const SpeakingEngagementPage = () => {
+const SpeakingEngagementPage:React.FC = () => {
   return (
     <div>SpeakingEngagementPage</div>
   )

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const EventsPage = () => {
+const EventsPage:React.FC= () => {
   return (
     <div>EventsPage</div>
   )

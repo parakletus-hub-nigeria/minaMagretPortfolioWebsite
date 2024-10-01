@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PotraitsPage = () => {
+const PotraitsPage:React.FC = () => {
   return (
     <div>PotraitsPage</div>
   )

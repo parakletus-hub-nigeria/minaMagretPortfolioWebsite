@@ -1,5 +1,4 @@
 import React from 'react';
-import blackWoman from '../../public/images/black-woman.jpg';
 
 interface HonorsComponentProps{
    title: string;

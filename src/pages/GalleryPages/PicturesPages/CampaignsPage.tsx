@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CampaignsPage = () => {
+const CampaignsPage:React.FC = () => {
   return (
     <div>CampaignsPage</div>
   )

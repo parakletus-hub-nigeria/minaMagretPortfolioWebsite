@@ -57,26 +57,6 @@ const Navbar = () => {
   const linkClassName = ({ isActive }: { isActive: boolean }) =>
     isActive ? 'text-blue-500' : 'text-white';
 
-  const mobileVariants = {
-    open: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        type: 'spring',
-        stiffness: 300,
-        damping: 30,
-      },
-    },
-    closed: {
-      x: '-100%',
-      opacity: 0,
-      transition: {
-        type: 'spring',
-        stiffness: 300,
-        damping: 30,
-      },
-    },
-  };
 const {authorLogoUrl} = useAuthorContext();
   return (
     <nav className="bg-transparent text-white px-4 py-3 md:flex md:justify-between">

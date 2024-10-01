@@ -1,6 +1,6 @@
 import React from 'react'
 
-const GraduationsPage = () => {
+const GraduationsPage:React.FC = () => {
   return (
     <div>GraduationsPage</div>
   )
