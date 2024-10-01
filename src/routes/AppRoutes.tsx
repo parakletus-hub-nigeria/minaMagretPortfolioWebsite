@@ -22,6 +22,7 @@ import PotraitsPage from '../pages/GalleryPages/PicturesPages/PotraitsPage';
 import SpeakingEngagementPage from '../pages/GalleryPages/PicturesPages/SpeakingEngagementPage';
 import { HomePageLoader } from '../pages/HomePage';
 import { LayoutLoader } from './Layout';
+import ErrorPage from '../pages/ErrorPage';
 
 
 const router = createBrowserRouter([
@@ -37,10 +38,14 @@ const router = createBrowserRouter([
     loader: LayoutLoader,
     children: [
       {
+        index: true,
+        element: <Navigate to="/home" replace={true} />,
+      },
+      {
         path: "about",
         children: [
           {
-            index: true, // This will redirect `/about` to `/about/profile`
+            index: true, 
             element: <Navigate to="profile" replace={true} />,
           },
           {
@@ -153,7 +158,11 @@ const router = createBrowserRouter([
         loader: contactPageLoader
       }
     ]
-  }
+  },
+  {
+    path: "*",
+    element: <ErrorPage />, 
+  },
 ]);
 
 
