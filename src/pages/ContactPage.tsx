@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter, FaEnvelope, FaSnapchat, FaRegEnvelope } from 'react-icons/fa';
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter, FaEnvelope, FaSnapchat} from 'react-icons/fa';
 import { useLoaderData, LoaderFunction } from 'react-router';
 import { fetchSocialLinks } from '../../sanityApiClient/useSanityClient';
 import { useAuthorContext } from '../hooks/AuthorContext';
@@ -74,7 +74,7 @@ const ContactPage:React.FC = () => {
                 )}
                 {link.snapchat && (
                   <a href={link.snapchat}>
-                    <FaTwitter size={48} className="text-white p-2 bg-[#17a2b8] rounded-lg" /> {/* Make sure to replace with the correct Snapchat icon */}
+                    <FaSnapchat size={48} className="text-white p-2 bg-[#17a2b8] rounded-lg" /> 
                   </a>
                 )}
                 {link.email && (
