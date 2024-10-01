@@ -1,0 +1,73 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Build output
+dist/
+.vite/
+
+# Logs
+logs/
+*.log
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+.bazel/
+__pycache__/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE and edit
+.vscode/
+
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
+*.tgz
+*.gz
+*.zip
+*.tar
+*.tar.gz
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Sanity specific
+sanity.json
+studio/.env
+studio/build/
+studio/dist/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
