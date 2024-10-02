@@ -163,17 +163,17 @@ const {authorLogoUrl} = useAuthorContext();
       >
         <ul className="ml-4 mt-2 space-y-2 capitalize text-white">
           <li>
-            <NavLink to="/writings/law-and-human-rights" className={linkClassName} onClick={toggleNavbar}>
-              Research papers
+            <NavLink to="/writings/papers" className={linkClassName} onClick={toggleNavbar}>
+              papers
             </NavLink>
           </li>
           <li>
-            <NavLink to="/writings/women-and-girls" className={linkClassName} onClick={toggleNavbar}>
+            <NavLink to="/writings/textbooks" className={linkClassName} onClick={toggleNavbar}>
              Textbooks
             </NavLink>
           </li>
           <li>
-            <NavLink to="/writings/peace-and-security" className={linkClassName} onClick={toggleNavbar}>
+            <NavLink to="/writings/manuals" className={linkClassName} onClick={toggleNavbar}>
              manuals
             </NavLink>
           </li>
@@ -364,17 +364,17 @@ const {authorLogoUrl} = useAuthorContext();
       >
         <ul className="mt-4 py-4 px-4 text-sm font-normal text-left flex flex-col gap-2 capitalize">
           <li>
-            <NavLink to="/writings/law-and-human-rights" className={linkClassName}>
-              Research papers
+            <NavLink to="/writings/papers" className={linkClassName}>
+              papers
             </NavLink>
           </li>
           <li>
-            <NavLink to="/writings/women-and-girls" className={linkClassName}>
+            <NavLink to="/writings/textbooks" className={linkClassName}>
              Textbooks
             </NavLink>
           </li>
           <li>
-            <NavLink to="/writings/peace-and-security" className={linkClassName}>
+            <NavLink to="/writings/manuals" className={linkClassName}>
              manuals
             </NavLink>
           </li>

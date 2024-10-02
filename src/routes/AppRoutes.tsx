@@ -82,18 +82,18 @@ const router = createBrowserRouter([
             element: <Navigate to="law-and-human-rights" replace={true} />,
           },
           {
-            path: "law-and-human-rights",
+            path: "papers",
             element: <LawHumanRightsPage/>,
             loader: lawAndHumanRightsPageLoader
           },
           {
-            path: "women-and-girls",
+            path: "textbooks",
             element: <WomenGirlsPage/>,
             loader: womenAndGirlsPageLoader
             
           },
           {
-            path: "peace-and-security",
+            path: "manuals",
             element: <PeaceAndSecurityPage/>,
             loader: peaceAndSecurityPageLoader
           }
