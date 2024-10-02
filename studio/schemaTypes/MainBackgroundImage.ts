@@ -2,13 +2,13 @@
 import { defineField, defineType } from 'sanity';
 
 export default defineType({
-  name: 'HomePageBackgroundImage',
-  title: 'HomePage Background Image',
+  name: 'MainBackgroundImage',
+  title: 'Main Background Image',
   type: 'document',
   fields: [
     defineField({
       name: 'image',
-      title: 'HomePage Background Image',
+      title: 'Main Background Image',
       type: 'image',
       options: {
         hotspot: true, // Enables image cropping

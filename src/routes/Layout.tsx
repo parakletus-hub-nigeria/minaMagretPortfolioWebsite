@@ -79,12 +79,12 @@ const Layout: React.FC = () => {
     },
   };
 
-  // Use the defined type for loader data
+
   const { backgroundImage } = useLoaderData() as LayoutLoaderData;
 
   return (
     <div
-      className='absolute inset-0'
+      className='h-screen w-screen bg-cover bg-top bg-no-repeat'
       style={{
         backgroundImage: `url(${backgroundImage[0]?.image?.asset?.url})`,
         backgroundPosition: 'center',

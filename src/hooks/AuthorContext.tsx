@@ -2,7 +2,6 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAuthorDetails } from '../../sanityApiClient/useSanityClient'; 
 
-
 interface Author {
   author: string;
   logo: {
@@ -24,42 +23,41 @@ export const AuthorContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const { data, error, isLoading } = useQuery<Author[], Error>({
     queryKey: ['authorData'],
     queryFn: fetchAuthorDetails,
-    staleTime: 0,
+    staleTime: 0, 
     refetchOnWindowFocus: true,
     refetchOnMount: true,
     refetchOnReconnect: true,
   });
-
+  
   const [authorName, setAuthorName] = useState<string>('');
   const [authorLogoUrl, setAuthorLogoUrl] = useState<string>('');
-
 
   const persistAuthorData = (name: string, logoUrl: string) => {
     localStorage.setItem('authorName', name);
     localStorage.setItem('authorLogoUrl', logoUrl);
   };
 
-
   useEffect(() => {
     const storedName = localStorage.getItem('authorName');
     const storedLogoUrl = localStorage.getItem('authorLogoUrl');
 
-    if (storedName && storedLogoUrl) {
-    
-      setAuthorName(storedName);
-      setAuthorLogoUrl(storedLogoUrl);
-    } else if (data && data.length > 0) {
- 
+    if (data && data.length > 0) {
       const fetchedAuthor = data[0];
       const name = fetchedAuthor.author;
       const logoUrl = fetchedAuthor.logo.asset.url;
 
-      setAuthorName(name);
-      setAuthorLogoUrl(logoUrl);
-      persistAuthorData(name, logoUrl);
+      // Check and compare Compare with stored values
+      if (name !== storedName || logoUrl !== storedLogoUrl) {
+        setAuthorName(name);
+        setAuthorLogoUrl(logoUrl);
+        persistAuthorData(name, logoUrl); // Update local storage
+      } else {
+        // If the fetched data matches, use the one in local storage
+        setAuthorName(storedName || '');
+        setAuthorLogoUrl(storedLogoUrl || '');
+      }
     }
   }, [data]);
-
 
   useEffect(() => {
     const changeFavicon = (newFaviconUrl: string) => {

@@ -1,7 +1,7 @@
 import {sanityClient} from './sanityClient';
 
 export const fetchBackgroundImage = async () => {
-  const query = '*[_type == "HomePageBackgroundImage"]{image{asset->{_id, url}}}';
+  const query = '*[_type == "MainBackgroundImage"]{image{asset->{_id, url}}}';
   const data = await sanityClient.fetch(query);
   return data;
 };

@@ -60,52 +60,54 @@ const HomePage:React.FC = () => {
 
   
 
-
-
-
   useEffect(() => {
      document.title = `Homepage - ${authorName}`;
    }, [authorName]);
 
+ 
+  
+return (
+  <section>
+  <div className='flex flex-col montserrat min-h-screen w-screen relative overflow-hidden'>
+   
+    <div
+      className='h-screen w-screen bg-cover bg-center bg-no-repeat'
+      style={{
+        backgroundImage: `url(${backgroundImage[0]?.image?.asset?.url})`,
+      }}
+    >
+    
+      <div className='flex flex-col md:flex-row justify-center items-center h-full'>
+     
+        <picture className='w-full h-full md:w-1/2'>
+          <img
+            src={homePageHeroImage[0]?.image?.asset?.url}
+            alt="Image of a black woman"
+            className='w-full h-full object-cover'
+          />
+        </picture>
 
-  return (
-    <section>
-      <div className='flex montserrat h-screen w-screen relative'>
-        <div
-          className='absolute inset-0'
-          style={{
-            backgroundImage: `url(${backgroundImage[0]?.image?.asset?.url})`,
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat',
-          }}
-        >
-          <div className='flex justify-center items-center h-full'>
-            <picture className='md:basis-1/3'>
-              <img
-                src={homePageHeroImage[0]?.image?.asset?.url}
-                alt="Image of a black woman"
-                className='w-screen h-screen md:w-full md:h-full'
-              />
-            </picture>
-
-            <div className='absolute bottom-[20%] left-4 md:-left-0 md:bottom-0 md:basis-2/3 md:relative md:h-full flex justify-center items-center'>
-              <span className='flex relative flex-col items-start justify-start gap-12 md:-left-20'>
-                <h2 className='font-normal text-white text-4xl'>Meet Mina Margaret Ogbanga, PhD</h2>
-                <Link
-                  to={`/about/profile`}
-                  className='font-bold text-white text-2xl flex items-center capitalize bg-[#49A3AC] py-3 px-8 rounded-md w-fit'
-                >
-                  <p>dive in</p>
-                  <MdOutlineKeyboardArrowRight />
-                </Link>
-              </span>
-            </div>
+      
+        <div className='absolute bottom-[10%] md:bottom-0 md:left-4 md:relative md:h-full flex justify-center items-center w-full md:w-1/2'>
+          <div className='flex flex-col items-center md:items-start text-center md:text-left gap-6 p-4 md:p-8 playfair'>
+            <h2 className='text-white text-3xl md:text-4xl lg:text-5xl font-semibold leading-10'>
+              Meet {authorName}
+            </h2>
+            <Link
+              to={`/about/profile`}
+              className='font-bold text-white text-lg md:text-xl flex items-center bg-[#49A3AC] py-3 px-6 rounded-md hover:animate-bounce'
+            >
+              <p>Dive In</p>
+              <MdOutlineKeyboardArrowRight className='ml-2' />
+            </Link>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </div>
+  </div>
+</section>
+
+)
 };
 
 export default HomePage;

@@ -1,5 +1,5 @@
 import Author from './AuthorSchema';
-import HomePageBackgroundImage from './HomePageBackgroundImageSchema';
+import MainBackgroundImage from './MainBackgroundImage';
 import HomePageHeroImage from './HomePageHeroImageSchema';
 import ProfilePageHeroImage from './ProfilePageHeroImageSchema';
 import ProfilePageText from './ProfilePageTextSchema';
@@ -23,7 +23,7 @@ import Socials from './SocialsSchema';
 
 export const schemaTypes = 
 [Author,
- HomePageBackgroundImage, 
+ MainBackgroundImage, 
  HomePageHeroImage, 
  ProfilePageHeroImage, 
  ProfilePageText,

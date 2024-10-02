@@ -15,13 +15,13 @@ const App:React.FC = () => {
 
 
   return (
-   <div>
+   <>
 <QueryClientProvider client={queryClient}>
   <AuthorContextProvider>
    <AppRoutes/>
   </AuthorContextProvider>
  </QueryClientProvider>
-  </div>
+  </>
    
   )
 }
