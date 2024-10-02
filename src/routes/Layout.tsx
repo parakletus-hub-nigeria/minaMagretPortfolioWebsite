@@ -4,6 +4,8 @@ import { MdOutlineKeyboardArrowUp } from "react-icons/md";
 import Navbar from '../components/Navbar'; // Adjust the path as needed
 import { fetchBackgroundImage } from '../../sanityApiClient/useSanityClient';
 import Footer from '../components/Footer';
+import { useAuthorContext } from '../hooks/AuthorContext';
+import { Helmet } from 'react-helmet';
 
 // Define the type for the asset
 interface BackgroundImageAsset {
@@ -64,9 +66,15 @@ const Layout:React.FC = () => {
   };
 
   const { backgroundImage } = useLoaderData() as LayoutLoaderData;
+  const {authorName} = useAuthorContext();
+  const title = "Welcome to My Portfolio"; 
+  const description = `Explore the work of ${authorName}, a passionate reader and educator. Discover projects, writings, and more.`; 
+  const image = "https://cdn.sanity.io/images/cod4w9ou/production/c72faa4aa2c39e39b4f941284cd7f055ddb8e922-3889x4861.jpg"; 
+  const url = "http://minaogbanga.com/"; 
+
  return(
 <div
-  className="relative min-h-screen" // Make sure the wrapper takes the full viewport height
+  className="relative min-h-screen" 
   style={{
     backgroundImage: `url(${backgroundImage[0]?.image?.asset?.url})`,
     backgroundPosition: "center",
@@ -74,7 +82,25 @@ const Layout:React.FC = () => {
     backgroundRepeat: "no-repeat",
     backgroundAttachment: "fixed",
   }}
+
+ 
 >
+
+<Helmet>
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={image} />
+  <meta property="og:url" content={url} />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={authorName} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={image} />
+</Helmet>
+
   {/* Navbar */}
   <header
     className={`sticky top-0 z-50 transition-colors duration-300 ${
