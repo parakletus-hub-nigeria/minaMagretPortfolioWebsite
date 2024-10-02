@@ -64,45 +64,50 @@ const Layout:React.FC = () => {
   };
 
   const { backgroundImage } = useLoaderData() as LayoutLoaderData;
-  return (
-    <div className='absoulte inset-0'
-   
-    style={{
-      backgroundImage: `url(${backgroundImage[0]?.image?.asset?.url})`,
-      backgroundPosition: 'center',
-      backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat',
-      minHeight: '100vh', 
-      backgroundAttachment: 'fixed',
-    }}
-    >
-      
-      <header className={`sticky top-0 z-50 transition-colors duration-300 ${isScrolled ? 'bg-black shadow-md' : 'bg-transparent'}`}>
-       <div className='mx-auto max-w-[1200px]'>
-        <Navbar />
-
-       </div>
-      </header>
-
-      <main className="flex flex-col mx-auto max-w-[1200px]">
-        <div className="flex-1 overflow-y-auto p-4">
-          <Outlet />
-        </div>
-
-        {showScrollToTop && (
-          <button
-            onClick={scrollToTop}
-            className="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-800 text-white p-3 rounded-full shadow-lg transition-all duration-300"
-          >
-            <MdOutlineKeyboardArrowUp size={20} />
-          </button>
-        )}
-      </main>
-      <footer>
-        <Footer/>
-      </footer>
+ return(
+<div
+  className="relative min-h-screen" // Make sure the wrapper takes the full viewport height
+  style={{
+    backgroundImage: `url(${backgroundImage[0]?.image?.asset?.url})`,
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundAttachment: "fixed",
+  }}
+>
+  {/* Navbar */}
+  <header
+    className={`sticky top-0 z-50 transition-colors duration-300 ${
+      isScrolled ? "bg-black shadow-md" : "bg-transparent"
+    }`}
+  >
+    <div className="mx-auto max-w-[1200px]">
+      <Navbar />
     </div>
-  );
+  </header>
+
+  {/* Main content */}
+  <main className="mx-auto max-w-[1200px] p-4 pb-16"> {/* Add padding-bottom to prevent overlap */}
+    <Outlet />
+  </main>
+
+  {/* Scroll to Top button */}
+  {showScrollToTop && (
+    <button
+      onClick={scrollToTop}
+      className="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-800 text-white p-3 rounded-full shadow-lg transition-all duration-300"
+    >
+      <MdOutlineKeyboardArrowUp size={20} />
+    </button>
+  )}
+
+  {/* Footer */}
+  <footer className="absolute bottom-0 w-full bg-gray-900 text-center py-2">
+    <Footer />
+  </footer>
+</div>
+
+ );
 };
 
 export default Layout;

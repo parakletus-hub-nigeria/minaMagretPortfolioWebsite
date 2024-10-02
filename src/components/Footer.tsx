@@ -5,7 +5,7 @@ const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear(); // Get the current year
 
   return (
-    <footer className="bg-gray-900 text-white py-4 text-center flex flex-col gap-2 playfair">
+    <footer className="bg-gray-900 text-white text-center flex flex-col gap-2 playfair">
       
        
       <div className="text-sm">
