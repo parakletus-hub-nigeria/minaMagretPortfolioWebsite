@@ -31,7 +31,7 @@ nav {
 }
 
 /* Body Text */
-p, span, div {
+p{
   font-family: 'Open Sans', sans-serif;
  
 }

@@ -164,17 +164,17 @@ const {authorLogoUrl} = useAuthorContext();
         <ul className="ml-4 mt-2 space-y-2 capitalize text-white">
           <li>
             <NavLink to="/writings/law-and-human-rights" className={linkClassName} onClick={toggleNavbar}>
-              law and human rights
+              Research papers
             </NavLink>
           </li>
           <li>
             <NavLink to="/writings/women-and-girls" className={linkClassName} onClick={toggleNavbar}>
-              women and girls
+             Textbooks
             </NavLink>
           </li>
           <li>
             <NavLink to="/writings/peace-and-security" className={linkClassName} onClick={toggleNavbar}>
-              peace and security
+             manuals
             </NavLink>
           </li>
         </ul>
@@ -365,17 +365,17 @@ const {authorLogoUrl} = useAuthorContext();
         <ul className="mt-4 py-4 px-4 text-sm font-normal text-left flex flex-col gap-2 capitalize">
           <li>
             <NavLink to="/writings/law-and-human-rights" className={linkClassName}>
-              Law and Human Rights
+              Research papers
             </NavLink>
           </li>
           <li>
             <NavLink to="/writings/women-and-girls" className={linkClassName}>
-              Women and Girls
+             Textbooks
             </NavLink>
           </li>
           <li>
             <NavLink to="/writings/peace-and-security" className={linkClassName}>
-              Peace and Security
+             manuals
             </NavLink>
           </li>
         </ul>

@@ -3,6 +3,7 @@ import { Outlet, LoaderFunction, useLoaderData } from 'react-router-dom';
 import { MdOutlineKeyboardArrowUp } from "react-icons/md";
 import Navbar from '../components/Navbar'; // Adjust the path as needed
 import { fetchBackgroundImage } from '../../sanityApiClient/useSanityClient';
+import Footer from '../components/Footer';
 
 // Define the type for the asset
 interface BackgroundImageAsset {
@@ -97,6 +98,9 @@ const Layout:React.FC = () => {
           </button>
         )}
       </main>
+      <footer>
+        <Footer/>
+      </footer>
     </div>
   );
 };
