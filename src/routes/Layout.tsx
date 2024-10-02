@@ -1,9 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { LoaderFunction, useLoaderData } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Outlet } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import ScrollToTopButton from '../components/ScrollToTopButton';
+import React, { useEffect, useState } from 'react';
+import { Outlet, LoaderFunction, useLoaderData } from 'react-router-dom';
+import { MdOutlineKeyboardArrowUp } from "react-icons/md";
+import Navbar from '../components/Navbar'; // Adjust the path as needed
 import { fetchBackgroundImage } from '../../sanityApiClient/useSanityClient';
 
 // Define the type for the asset
@@ -38,77 +36,67 @@ export const LayoutLoader: LoaderFunction = async () => {
     throw new Response('Failed to load one or more images', { status: 500 });
   }
 };
-
-const Layout: React.FC = () => {
-  const mainRef = useRef<HTMLElement>(null);
-  const [trackMousePosition, setTrackMousePosition] = useState<{ x: number; y: number }>({
-    x: 0,
-    y: 0,
-  });
+const Layout:React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-
-  // Mouse move event handler
-  const mouseMoveFunction = (event: MouseEvent) => {
-    setTrackMousePosition({
-      x: event.clientX,
-      y: event.clientY,
-    });
-  };
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (mainRef.current) {
-        const scrollTop = mainRef.current.scrollTop;
-        setIsScrolled(scrollTop > 40);
-      }
+      const scrollTop = window.scrollY;
+
+      // Show/hide navbar background based on scroll
+      setIsScrolled(scrollTop > 40);
+
+      // Show/hide scroll-to-top button
+      setShowScrollToTop(scrollTop > 200);
     };
 
-    window.addEventListener('mousemove', mouseMoveFunction);
-    mainRef.current?.addEventListener('scroll', handleScroll);
-
+    window.addEventListener('scroll', handleScroll);
+    
     return () => {
-      window.removeEventListener('mousemove', mouseMoveFunction);
-      mainRef.current?.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
-  }, [mainRef]);
+  }, []);
 
-  const variants = {
-    default: {
-      x: trackMousePosition.x - 16,
-      y: trackMousePosition.y - 16,
-    },
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-
   const { backgroundImage } = useLoaderData() as LayoutLoaderData;
-
   return (
-    <div
-      className='h-screen w-screen bg-cover bg-top bg-no-repeat'
-      style={{
-        backgroundImage: `url(${backgroundImage[0]?.image?.asset?.url})`,
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-      }}
+    <div className='absoulte inset-0'
+   
+    style={{
+      backgroundImage: `url(${backgroundImage[0]?.image?.asset?.url})`,
+      backgroundPosition: 'center',
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      minHeight: '100vh', 
+      backgroundAttachment: 'fixed',
+    }}
     >
-      <div className='flex flex-col h-screen max-w-[1200px] mx-auto'>
-        <header
-          className={`z-50 transition-colors duration-300 ${isScrolled ? 'bg-black' : 'bg-transparent'}`}
-        >
-          <Navbar />
-        </header>
-        <main ref={mainRef} className='overflow-y-scroll hidescrollbar flex-1'>
+      
+      <header className={`sticky top-0 z-50 transition-colors duration-300 ${isScrolled ? 'bg-black shadow-md' : 'bg-transparent'}`}>
+       <div className='mx-auto max-w-[1200px]'>
+        <Navbar />
+
+       </div>
+      </header>
+
+      <main className="flex flex-col mx-auto max-w-[1200px]">
+        <div className="flex-1 overflow-y-auto p-4">
           <Outlet />
-          <ScrollToTopButton containerRef={mainRef} />
-        </main>
-        
-        <motion.div
-          className='cursor bg-[#1111] w-12 h-12 rounded-full border-2 border-blue-500 fixed top-0 left-0 z-[999] pointer-events-none'
-          variants={variants}
-          animate="default"
-        />
-      </div>
+        </div>
+
+        {showScrollToTop && (
+          <button
+            onClick={scrollToTop}
+            className="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-800 text-white p-3 rounded-full shadow-lg transition-all duration-300"
+          >
+            <MdOutlineKeyboardArrowUp size={20} />
+          </button>
+        )}
+      </main>
     </div>
   );
 };

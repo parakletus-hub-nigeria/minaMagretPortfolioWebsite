@@ -66,52 +66,54 @@ const ProfilePage: React.FC = () => {
 
   return (
     <section>
-      <div className='flex flex-col gap-6 md:flex-row md:w-[95%] mx-auto px-4 md:px-6 py-8'>
-        <picture className='py-4'>
-          <img 
-            src={profilePageHeroImage[0]?.image?.asset?.url} 
-            alt="Profile Hero" 
-            className='md:max-w-[380px] md:max-h-[560px]' 
-          />
-        </picture>
-        <div>
-          <span className='flex flex-col gap-2 pb-6 capitalize text-left font-bold text-white border-b border-white'>
-           <h1 className='text-4xl'>Profile</h1>
-          </span>
+  <div className='flex flex-col gap-6 md:block md:w-[95%] mx-auto px-4 md:px-6 py-8 text'>
+  <picture className='py-4 md:float-left md:mr-4'> 
+    <img 
+      src={profilePageHeroImage[0]?.image?.asset?.url} 
+      alt="Profile Hero" 
+      className='md:max-w-[380px] md:max-h-[560px]' 
+    />
+  </picture>
 
-          <div className='flex flex-col gap-8 pt-6'>
-            {profilePageText.map((paragraph) => (
-              <div key={paragraph._id} className="paragraph flex flex-col gap-8">
-                {paragraph.content.map((block) => (
-                  <p key={block._key} className='text-white text-base font-normal'>
-                    {block.children.map((child) => {
-                      const link = block.markDefs.find(def => child.marks.includes(def._key));
-                      if (link) {
-                        return (
-                          <a
-                            key={child._key}
-                            href={link.href}
-                            target={link.openInNewTab ? '_blank' : '_self'}
-                            rel={link.openInNewTab ? 'noopener noreferrer' : undefined}
-                            className='text-[#49A3AC] hover:text-[#fd7e14]' // Style your links
-                          >
-                            {child.text}
-                          </a>
-                        );
-                      }
-                      return (
-                        <span key={child._key} className={child.marks.join(' ')}>
-                          {child.text}
-                        </span>
-                      );
-                    })}
-                  </p>
-                ))}
-              </div>
-            ))}
-          </div>
+  <div>
+    <span className='flex flex-col gap-2 pb-6 capitalize text-left font-bold text-white border-b border-white'>
+      <h1 className='text-4xl'>Profile</h1>
+    </span>
+
+    <div className='flex  flex-col  gap-8 pt-6 md:block'>
+      {profilePageText.map((paragraph) => (
+        <div key={paragraph._id} className="paragraph flex flex-col gap-8 md:block" >
+          {paragraph.content.map((block) => (
+            <p key={block._key} className='text-white text-base font-normal leading-7 tracking-wide text-justify md:my-6'>
+              {block.children.map((child) => {
+                const link = block.markDefs.find(def => child.marks.includes(def._key));
+                if (link) {
+                  return (
+                    <a
+                      key={child._key}
+                      href={link.href}
+                      target={link.openInNewTab ? '_blank' : '_self'}
+                      rel={link.openInNewTab ? 'noopener noreferrer' : undefined}
+                      className='text-[#49A3AC] hover:text-[#fd7e14]' // Style your links
+                    >
+                      {child.text}
+                    </a>
+                  );
+                }
+                return (
+                  <span key={child._key} className={child.marks.join(' ')}>
+                    {child.text}
+                  </span>
+                );
+              })}
+            </p>
+          ))}
         </div>
-      </div>
+      ))}
+    </div>
+  </div>
+</div>
+
     </section>
   );
 };

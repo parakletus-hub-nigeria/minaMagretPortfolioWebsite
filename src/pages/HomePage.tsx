@@ -69,41 +69,46 @@ const HomePage:React.FC = () => {
 return (
   <section>
   <div className='flex flex-col montserrat min-h-screen w-screen relative overflow-hidden'>
-   
-    <div
-      className='h-screen w-screen bg-cover bg-center bg-no-repeat'
-      style={{
-        backgroundImage: `url(${backgroundImage[0]?.image?.asset?.url})`,
-      }}
-    >
-    
-      <div className='flex flex-col md:flex-row justify-center items-center h-full'>
-     
-        <picture className='w-full h-full md:w-1/2'>
-          <img
-            src={homePageHeroImage[0]?.image?.asset?.url}
-            alt="Image of a black woman"
-            className='w-full h-full object-cover'
-          />
-        </picture>
+  <div className='relative h-screen w-screen overflow-hidden bg-[#111]'>
+  {/* Blurred Background Image */}
+  <div
+    className='absolute inset-0 bg-cover bg-center bg-no-repeat'
+    style={{
+      backgroundImage: `url(${backgroundImage[0]?.image?.asset?.url})`,
+      filter: 'blur(8px)',
+      zIndex: 0, 
+      height: '100%', 
+      width: '100%',
+    }}
+  />
 
-      
-        <div className='absolute bottom-[10%] md:bottom-0 md:left-4 md:relative md:h-full flex justify-center items-center w-full md:w-1/2'>
-          <div className='flex flex-col items-center md:items-start text-center md:text-left gap-6 p-4 md:p-8 playfair'>
-            <h2 className='text-white text-3xl md:text-4xl lg:text-5xl font-semibold leading-10'>
-              Meet {authorName}
-            </h2>
-            <Link
-              to={`/about/profile`}
-              className='font-bold text-white text-lg md:text-xl flex items-center bg-[#49A3AC] py-3 px-6 rounded-md hover:animate-bounce'
-            >
-              <p>Dive In</p>
-              <MdOutlineKeyboardArrowRight className='ml-2' />
-            </Link>
-          </div>
-        </div>
+  {/* Content Container */}
+  <div className='flex flex-col md:flex-row justify-center items-center h-full relative z-10'>
+    <picture className='w-full h-full md:w-1/2'>
+      <img
+        src={homePageHeroImage[0]?.image?.asset?.url}
+        alt="Image of a black woman"
+        className='w-full h-full object-cover'
+      />
+    </picture>
+
+    <div className='absolute bottom-[35%] md:bottom-0 md:left-4 md:relative md:h-full flex justify-center items-center w-full md:w-1/2'>
+      <div className='flex flex-col items-center md:items-start text-center md:text-left gap-6 p-4 md:p-8 playfair'>
+        <h2 className='text-white text-3xl md:text-4xl lg:text-5xl font-semibold leading-10'>
+          Meet {authorName}
+        </h2>
+        <Link
+          to={`/about/profile`}
+          className='font-bold text-white text-lg md:text-xl flex items-center bg-[#49A3AC] py-3 px-6 rounded-md hover:animate-bounce'
+        >
+          <p>Dive In</p>
+          <MdOutlineKeyboardArrowRight className='ml-2' />
+        </Link>
       </div>
     </div>
+  </div>
+</div>
+
   </div>
 </section>
 
