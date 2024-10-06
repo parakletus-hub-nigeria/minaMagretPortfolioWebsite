@@ -11,7 +11,7 @@ interface BooksDataProps {
   title: string;
   image: {
     asset: {
-        _id:string
+        _id: string;
     };
   };
   url: string;
@@ -25,6 +25,7 @@ interface WritingsProps {
 
 const WritingsComponent: React.FC<Partial<WritingsProps>> = ({ title, linksData, booksData }) => {
   const [loadedImagesCount, setLoadedImagesCount] = useState(0);
+  const [imageUrls, setImageUrls] = useState<string[]>([]); // State to hold preloaded image URLs
   const totalImages = booksData ? booksData.length : 0; // Total number of images to load
 
   useEffect(() => {
@@ -33,16 +34,20 @@ const WritingsComponent: React.FC<Partial<WritingsProps>> = ({ title, linksData,
     };
 
     if (booksData) {
-      booksData.forEach(bookData => {
+      const urls = booksData.map(bookData => urlFor(bookData.image.asset._id).width(1920).quality(80).format('webp').url());
+      setImageUrls(urls); // Store preloaded image URLs in state
+
+      // Preload images
+      urls.forEach(url => {
         const img = new Image();
-        img.src = urlFor(bookData.image.asset._id).width(1920).quality(80).format('webp').url(); 
+        img.src = url; // Set the source to the preloaded URL
         img.onload = handleImageLoad;
-        img.onerror = handleImageLoad; 
+        img.onerror = handleImageLoad; // Count on error to avoid blocking
       });
     }
   }, [booksData]);
 
-  
+  // Show loading spinner until all images are loaded
   if (loadedImagesCount < totalImages) {
     return <WholePageSpinner />;
   }
@@ -73,7 +78,7 @@ const WritingsComponent: React.FC<Partial<WritingsProps>> = ({ title, linksData,
               {booksData.map((bookData, i) => (
                 <a key={i} href={`${bookData.url}`}>
                   <picture className='flex flex-col items-center justify-center md:max-h-[295px] md:max-w-[210px]'>
-                    <img src={bookData.image.asset.url} className='w-full h-full' alt={`${bookData.title}`} />
+                    <img src={imageUrls[i]} className='w-full h-full' alt={`${bookData.title}`} />
                     <p className='text-center text-white'>{bookData.title}</p>
                   </picture>
                 </a>

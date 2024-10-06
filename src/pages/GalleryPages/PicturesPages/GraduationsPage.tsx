@@ -6,4 +6,4 @@ const GraduationsPage:React.FC = () => {
   )
 }
 
-export default GraduationsPage
+export default GraduationsPage;

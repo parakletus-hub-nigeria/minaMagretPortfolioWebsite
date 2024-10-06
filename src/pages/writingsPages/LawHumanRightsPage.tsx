@@ -11,6 +11,7 @@ import { useAuthorContext } from '../../hooks/AuthorContext';
   image: {
     asset: {
       url: string;
+      _id: string;
     };
   };
   url: string;

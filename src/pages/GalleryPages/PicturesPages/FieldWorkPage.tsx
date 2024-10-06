@@ -31,9 +31,10 @@ const FieldWorkPage: React.FC = () => {
 
   // Map image links to the expected format for ImagesComponent
   const formattedImages = imageLinks.map((link) => ({
-    url: link.imageUrl,        // The URL of the image
-    title: link.imageTitle,     // The title of the image
-    description: link.description // The description of the image
+    url: link.imageUrl,  
+    _id: link._id,     
+    title: link.imageTitle,     
+    description: link.description
   }));
 
   
