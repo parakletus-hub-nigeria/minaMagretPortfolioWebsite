@@ -24,17 +24,17 @@ import { HomePageLoader } from '../pages/HomePage';
 import { LayoutLoader } from './Layout';
 import ErrorPage from '../pages/ErrorPage';
 
-
 const router = createBrowserRouter([
+
   {
     path: "/home",
-    element: <HomePage />,
-    index: true,
-    loader:HomePageLoader
+    element: <HomePage />,  
+    loader: HomePageLoader,
   },
+ 
   {
     path: "/",
-    element: <Layout />,
+    element: <Layout />, 
     loader: LayoutLoader,
     children: [
       {
@@ -45,126 +45,126 @@ const router = createBrowserRouter([
         path: "about",
         children: [
           {
-            index: true, 
+            index: true,
             element: <Navigate to="profile" replace={true} />,
           },
           {
             path: "profile",
             element: <ProfilePage />,
-            loader: profilePageLoader
+            loader: profilePageLoader,
           },
           {
-            path: 'my-work',
-            element: <WorkPage/>,
-            loader: workPageLoader
+            path: "my-work",
+            element: <WorkPage />,
+            loader: workPageLoader,
           },
           {
-            path: 'education',
-            element: <EducationPage/>,
-            loader: EducationPageLoader
+            path: "education",
+            element: <EducationPage />,
+            loader: EducationPageLoader,
           },
           {
-             path: 'fellowships-and-scholarships',
-             element: <FellowShipSchloarshipPage/>,
-             loader: fellowshipsAndSchloarshipPageLoader
+            path: "fellowships-and-scholarships",
+            element: <FellowShipSchloarshipPage />,
+            loader: fellowshipsAndSchloarshipPageLoader,
           },
           {
-            path:'awards-and-recognitions',
-            element: <AwardsPage/>,
-            loader: awardsPageLoader
-          }
-        ]
+            path: "awards-and-recognitions",
+            element: <AwardsPage />,
+            loader: awardsPageLoader,
+          },
+        ],
       },
-      {path: "writings",
+      {
+        path: "writings",
         children: [
           {
-            index: true, 
+            index: true,
             element: <Navigate to="law-and-human-rights" replace={true} />,
           },
           {
             path: "papers",
-            element: <LawHumanRightsPage/>,
-            loader: lawAndHumanRightsPageLoader
+            element: <LawHumanRightsPage />,
+            loader: lawAndHumanRightsPageLoader,
           },
           {
             path: "textbooks",
-            element: <WomenGirlsPage/>,
-            loader: womenAndGirlsPageLoader
-            
+            element: <WomenGirlsPage />,
+            loader: womenAndGirlsPageLoader,
           },
           {
             path: "manuals",
-            element: <PeaceAndSecurityPage/>,
-            loader: peaceAndSecurityPageLoader
-          }
-        ]
+            element: <PeaceAndSecurityPage />,
+            loader: peaceAndSecurityPageLoader,
+          },
+        ],
       },
       {
-        path:"gallery",
-        children:[
+        path: "gallery",
+        children: [
           {
-           index: true,
-           element: <Navigate to="videos" replace={true} />,
+            index: true,
+            element: <Navigate to="videos" replace={true} />,
           },
           {
             path: "videos",
-            element: <VideosPage/>,
-            loader: videoPageLoader
+            element: <VideosPage />,
+            loader: videoPageLoader,
           },
           {
             path: "news",
-            element: <NewsPage/>,
-            loader: newsPageLoader
+            element: <NewsPage />,
+            loader: newsPageLoader,
           },
           {
             path: "pictures",
-            children:[
+            children: [
               {
-                path:"field-work",
-                element: <FieldWorkPage/>,
-                loader: fieldWorkPageLoader
+                path: "field-work",
+                element: <FieldWorkPage />,
+                loader: fieldWorkPageLoader,
               },
               {
                 path: "campaigns",
-                element: <CampaignsPage/>
+                element: <CampaignsPage />,
               },
               {
                 path: "graduations",
-                element: <GraduationsPage/>
+                element: <GraduationsPage />,
               },
               {
-                path: "potraits",
-                element: <PotraitsPage/>
+                path: "portraits",
+                element: <PotraitsPage />,
               },
               {
                 path: "events",
-                element: <EventsPage/>
+                element: <EventsPage />,
               },
               {
                 path: "speaking-engagements",
-                element: <SpeakingEngagementPage/>
-              }
-            ]
-          }
-        ]
+                element: <SpeakingEngagementPage />,
+              },
+            ],
+          },
+        ],
       },
       {
-        path: 'blog',
-        element: <BlogPage/>
+        path: "blog",
+        element: <BlogPage />,
       },
       {
-        path: 'contact',
-        element: <ContactPage/>,
-        loader: contactPageLoader
-      }
-    ]
+        path: "contact",
+        element: <ContactPage />,
+        loader: contactPageLoader,
+      },
+    ],
   },
+
   {
     path: "*",
-    element: <ErrorPage />, 
+    element: <ErrorPage />,
   },
 ]);
-
 
 
 const AppRoutes:React.FC = () => {

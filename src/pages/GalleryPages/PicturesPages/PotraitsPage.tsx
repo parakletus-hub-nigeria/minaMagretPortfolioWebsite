@@ -6,4 +6,4 @@ const PotraitsPage:React.FC = () => {
   )
 }
 
-export default PotraitsPage
+export default PotraitsPage;
