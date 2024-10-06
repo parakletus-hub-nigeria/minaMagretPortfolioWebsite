@@ -8,7 +8,7 @@ interface ImageBookLink {
   title: string;
   image: {
     asset: {
-      url: string;
+     _id:string
     };
   };
   url: string;

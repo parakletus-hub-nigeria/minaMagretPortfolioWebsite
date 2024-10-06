@@ -280,13 +280,15 @@ const {authorLogoUrl} = useAuthorContext();
 
       {/* Nav for Large Screens */}
       {/*  */}
- <div className="hidden md:flex items-center space-x-6">
+      <div className="hidden md:flex items-center space-x-6">
   <ul className="space-x-6 flex text-lg">
     <li>
       <NavLink to="/home" className={linkClassName}>
         Home
       </NavLink>
     </li>
+
+    {/* About Menu */}
     <li
       className="relative"
       onMouseEnter={() => handleMouseEnter('about')}
@@ -295,7 +297,11 @@ const {authorLogoUrl} = useAuthorContext();
       onBlur={handleBlur}
       tabIndex={0}
     >
-      <NavLink to="/about" className={linkClassName}>
+      <NavLink 
+        to="/about" 
+        className={linkClassName}
+        onClick={(e) => e.preventDefault()} // Prevent navigation
+      >
         <span className="flex gap-4">
           <p className="capitalize">about</p>
           <p className='w-6 text-center'>{expandedMenu === 'about' ? '-' : '+'}</p>
@@ -348,7 +354,11 @@ const {authorLogoUrl} = useAuthorContext();
       onBlur={handleBlur}
       tabIndex={0}
     >
-      <NavLink to="/writings" className={linkClassName}>
+      <NavLink 
+        to="/writings" 
+        className={linkClassName}
+        onClick={(e) => e.preventDefault()} // Prevent navigation
+      >
         <span className="flex gap-4">
           <p className="capitalize">writings</p>
           <p className='w-6 text-center'>{expandedMenu === 'writings' ? '-' : '+'}</p>
@@ -365,17 +375,17 @@ const {authorLogoUrl} = useAuthorContext();
         <ul className="mt-4 py-4 px-4 text-sm font-normal text-left flex flex-col gap-2 capitalize">
           <li>
             <NavLink to="/writings/papers" className={linkClassName}>
-              papers
+              Papers
             </NavLink>
           </li>
           <li>
             <NavLink to="/writings/textbooks" className={linkClassName}>
-             Textbooks
+              Textbooks
             </NavLink>
           </li>
           <li>
             <NavLink to="/writings/manuals" className={linkClassName}>
-             manuals
+              Manuals
             </NavLink>
           </li>
         </ul>
@@ -383,114 +393,93 @@ const {authorLogoUrl} = useAuthorContext();
     </li>
 
     {/* Gallery Menu */}
-   
     <li
-  className="relative"
-  onMouseEnter={() => handleMouseEnter('gallery')}
-  onMouseLeave={handleMouseLeave}
-  onFocus={() => handleFocus('gallery')}
-  onBlur={handleBlur}
-  tabIndex={0}
->
-  <NavLink to="/gallery/videos" className={linkClassName}>
-    <span className="flex gap-4">
-      <p className="capitalize">gallery</p>
-      <p className='w-6 text-center'>{expandedMenu === 'gallery' ? '-' : '+'}</p>
-    </span>
-  </NavLink>
-  
-  <div
-    className={`transition-all absolute top-full left-0 w-48 bg-black z-10 duration-500 transform-gpu origin-top 
-      ${expandedMenu === 'gallery' ? 'rotateX(0deg) max-h-screen opacity-100' : 'rotateX(-90deg) max-h-0 opacity-0'}`}
-    style={{
-      transform: expandedMenu === 'gallery' ? 'rotateX(0deg)' : 'rotateX(-90deg)',
-      transition: 'transform 0.5s ease, opacity 0.5s ease, max-height 0.5s ease',
-    }}
-  >
-    <ul className="mt-4 py-4 px-4 text-sm font-normal text-left flex flex-col gap-2 capitalize">
-      <li>
-        <NavLink to="/gallery/videos" className={linkClassName}>
-          Videos
-        </NavLink>
-      </li>
-      <li
-  className="relative"
-  onMouseEnter={() => setExpandedSubMenu('pictures')}
-  onMouseLeave={() => setExpandedSubMenu(null)}
-  onFocus={() => setExpandedSubMenu('pictures')}
-  onBlur={() => setExpandedSubMenu(null)}
-  tabIndex={0}
->
-  <NavLink to="/gallery/pictures/field-work" className={linkClassName}>
-    Pictures
-  </NavLink>
+      className="relative"
+      onMouseEnter={() => handleMouseEnter('gallery')}
+      onMouseLeave={handleMouseLeave}
+      onFocus={() => handleFocus('gallery')}
+      onBlur={handleBlur}
+      tabIndex={0}
+    >
+      <NavLink 
+        to="/gallery" 
+        className={linkClassName}
+        onClick={(e) => e.preventDefault()} // Prevent navigation
+      >
+        <span className="flex gap-4">
+          <p className="capitalize">gallery</p>
+          <p className='w-6 text-center'>{expandedMenu === 'gallery' ? '-' : '+'}</p>
+        </span>
+      </NavLink>
+      <div
+        className={`transition-all absolute top-full left-0 w-48 bg-black z-10 duration-500 transform-gpu origin-top 
+          ${expandedMenu === 'gallery' ? 'rotateX(0deg) max-h-screen opacity-100' : 'rotateX(-90deg) max-h-0 opacity-0'}`}
+        style={{
+          transform: expandedMenu === 'gallery' ? 'rotateX(0deg)' : 'rotateX(-90deg)',
+          transition: 'transform 0.5s ease, opacity 0.5s ease, max-height 0.5s ease',
+        }}
+      >
+        <ul className="mt-4 py-4 px-4 text-sm font-normal text-left flex flex-col gap-2 capitalize">
+          <li>
+            <NavLink to="/gallery/videos" className={linkClassName}>
+              Videos
+            </NavLink>
+          </li>
+          <li
+            className="relative"
+            onMouseEnter={() => setExpandedSubMenu('pictures')}
+            onMouseLeave={() => setExpandedSubMenu(null)}
+            onFocus={() => setExpandedSubMenu('pictures')}
+            onBlur={() => setExpandedSubMenu(null)}
+            tabIndex={0}
+          >
+            <NavLink 
+             to={`/pictures`}
+              className={linkClassName} 
+              onClick={(e) => e.preventDefault()} 
+            >
+              Pictures
+            </NavLink>
 
-  <div
-    className={`transition-all absolute top-0 -left-44 w-fit bg-black z-20 duration-500 origin-top 
-      ${expandedSubMenu === 'pictures' ? 'rotateX(0deg) max-h-screen opacity-100' : 'rotateX(-90deg) max-h-0 opacity-0'}`}
-    style={{
-      transform: expandedSubMenu === 'pictures' ? 'rotateX(0deg)' : 'rotateX(-90deg)',
-      transition: 'transform 0.5s ease, opacity 0.5s ease, max-height 0.5s ease',
-    }}
-  >
-    <ul className="ml-4 mt-2 space-y-2 ">
-      <li>
-        <NavLink to="/gallery/pictures/field-work" className={linkClassName}>
-          Field Work
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/gallery/pictures/campaigns" className={linkClassName}>
-          Campaigns
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/gallery/pictures/graduations" className={linkClassName}>
-          Graduations
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/gallery/pictures/speaking-engagements" className={linkClassName}>
-          Speaking Engagements
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/gallery/pictures/events" className={linkClassName}>
-          Events
-        </NavLink>
-      </li>
-
-      <li>
-                  <NavLink to="/gallery/pictures/potraits" className={linkClassName} onClick={toggleNavbar}>
-                    Potraits
+            <div
+              className={`transition-all absolute top-0 -left-24 w-fit bg-black z-20 duration-500 origin-top 
+                ${expandedSubMenu === 'pictures' ? 'rotateX(0deg) max-h-screen opacity-100' : 'rotateX(-90deg) max-h-0 opacity-0'}`}
+              style={{
+                transform: expandedSubMenu === 'pictures' ? 'rotateX(0deg)' : 'rotateX(-90deg)',
+                transition: 'transform 0.5s ease, opacity 0.5s ease, max-height 0.5s ease',
+              }}
+            >
+              <ul className="py-4 px-4 text-sm font-normal text-left flex flex-col gap-2 capitalize">
+                <li>
+                  <NavLink to="/gallery/pictures/travel" className={linkClassName}>
+                    Travel
                   </NavLink>
                 </li>
-    </ul>
-  </div>
-</li>
+                <li>
+                  <NavLink to="/gallery/pictures/events" className={linkClassName}>
+                    Events
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/gallery/pictures/portraits" className={linkClassName}>
+                    Portraits
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </li>
 
-
-      <li>
-        <NavLink to="/gallery/news" className={linkClassName}>
-          News
-        </NavLink>
-      </li>
-    </ul>
-  </div>
-</li>
-
-
-
-
-
-
-
-
+    {/* Blog Menu */}
     <li>
       <NavLink to="/blog" className={linkClassName}>
         Blog
       </NavLink>
     </li>
+
+    {/* Contact Menu */}
     <li>
       <NavLink to="/contact" className={linkClassName}>
         Contact
@@ -498,6 +487,7 @@ const {authorLogoUrl} = useAuthorContext();
     </li>
   </ul>
 </div>
+
 
     </nav>
   );

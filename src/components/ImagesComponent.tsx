@@ -1,36 +1,60 @@
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ImageViewer from './ImageViewerComponent';
+import { urlFor } from '../../sanityApiClient/sanityClient';
+import WholePageSpinner from './WholePageSpinner';
 
 interface ImagesComponentProps {
-  images: { url: string; title: string; description: string }[]; // Assuming images are objects with URL, title, and description
+  images: { asset: { _id: string; url: string }; title: string; description: string }[]; // Assuming images are objects with URL, title, and description
 }
 
 const ImagesComponent: React.FC<ImagesComponentProps> = ({ images }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loadedImagesCount, setLoadedImagesCount] = useState(0);
+  const [preloadedImages, setPreloadedImages] = useState<string[]>([]);
+  const totalImages = images.length;
 
-  const openViewer = (index: number) => {
-    setCurrentIndex(index);
-    setIsOpen(true);
-  };
+  useEffect(() => {
+    const handleImageLoad = () => {
+      setLoadedImagesCount((prevCount) => prevCount + 1);
+    };
 
-  const closeViewer = () => {
-    setIsOpen(false);
-  };
+    const imageUrls: string[] = images.map((image) => {
+      const imgUrl = urlFor(image.asset._id).width(1920).quality(80).format('webp').url(); 
+      const img = new Image();
+      img.src = imgUrl;
+      img.onload = handleImageLoad;
+      return imgUrl;
+    });
 
+    setPreloadedImages(imageUrls); 
+
+    return () => {
+   
+    };
+  }, [images]);
+
+  // First return statement for loading state
+  if (loadedImagesCount < totalImages) {
+    return (
+     <WholePageSpinner/>
+    );
+  }
+
+  
   return (
     <div>
-      
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
-        {images.map((image, index) => (
-          <div key={index} className="cursor-pointer" onClick={() => openViewer(index)}>
+        {preloadedImages.map((imageUrl, index) => (
+          <div key={images[index].asset._id} className="cursor-pointer" onClick={() => {
+            setCurrentIndex(index);
+            setIsOpen(true);
+          }}>
             <img
-              src={image.url}
-              alt={image.title || `Thumbnail ${index + 1}`} // Accessible alt text
+              src={imageUrl}
+              alt={images[index].title || `Thumbnail ${index + 1}`} // Accessible alt text
               className="w-full h-auto object-cover rounded-md shadow"
             />
-            
           </div>
         ))}
       </div>
@@ -38,9 +62,9 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({ images }) => {
       {/* Image Viewer */}
       {isOpen && (
         <ImageViewer
-          images={images.map(img => img.url)}
+          images={preloadedImages}
           currentIndex={currentIndex}
-          closeViewer={closeViewer}
+          closeViewer={() => setIsOpen(false)}
           setCurrentIndex={setCurrentIndex}
         />
       )}
@@ -49,3 +73,4 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({ images }) => {
 };
 
 export default ImagesComponent;
+

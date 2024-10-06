@@ -78,4 +78,4 @@ const LawHumanRightsPage:React.FC = () => {
   )
 }
 
-export default LawHumanRightsPage
+export default LawHumanRightsPage;

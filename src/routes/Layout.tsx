@@ -4,8 +4,7 @@ import { MdOutlineKeyboardArrowUp } from "react-icons/md";
 import Navbar from '../components/Navbar'; // Adjust the path as needed
 import { fetchBackgroundImage } from '../../sanityApiClient/useSanityClient';
 import Footer from '../components/Footer';
-import { useAuthorContext } from '../hooks/AuthorContext';
-import { Helmet } from 'react-helmet';
+import { urlFor } from '../../sanityApiClient/sanityClient'; // Ensure you import the urlFor function
 
 // Define the type for the asset
 interface BackgroundImageAsset {
@@ -39,101 +38,103 @@ export const LayoutLoader: LoaderFunction = async () => {
     throw new Response('Failed to load one or more images', { status: 500 });
   }
 };
-const Layout:React.FC = () => {
+
+const Layout: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showScrollToTop, setShowScrollToTop] = useState(false);
+  const [backgroundImageUrl, setBackgroundImageUrl] = useState('');
+
+  const { backgroundImage } = useLoaderData() as LayoutLoaderData;
 
   useEffect(() => {
+    // Generate the image URL using urlFor
+    const bgImageUrl = urlFor(backgroundImage[0]?.image?.asset?._id).quality(75).format('webp').url();
+    
+    // Set background image URL in state
+    setBackgroundImageUrl(bgImageUrl);
+
+    let timeoutId: NodeJS.Timeout | undefined; // Explicitly type timeoutId
+
     const handleScroll = () => {
-      const scrollTop = window.scrollY;
+      // Clear the previous timeout
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
 
-      // Show/hide navbar background based on scroll
-      setIsScrolled(scrollTop > 40);
+      // Set a new timeout to debounce
+      timeoutId = setTimeout(() => {
+        const scrollTop = window.scrollY;
 
-      // Show/hide scroll-to-top button
-      setShowScrollToTop(scrollTop > 200);
+        // Show/hide navbar background based on scroll
+        setIsScrolled(scrollTop > 40);
+
+        // Show/hide scroll-to-top button
+        setShowScrollToTop(scrollTop > 200);
+      }, 100); // Adjust the delay as needed
     };
 
     window.addEventListener('scroll', handleScroll);
-    
+
+    // Preload the background image
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.href = bgImageUrl; // Preload the image so that it can be fetched quickly
+    link.as = 'image';
+    document.head.appendChild(link);
+
     return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId); // Clear the timeout on unmount
+      }
       window.removeEventListener('scroll', handleScroll);
+      document.head.removeChild(link); // Clean up the link element on unmount
     };
-  }, []);
+  }, [backgroundImage]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const { backgroundImage } = useLoaderData() as LayoutLoaderData;
-  const {authorName} = useAuthorContext();
-  const title = "Welcome to My Portfolio"; 
-  const description = `Explore the work of ${authorName}, a passionate reader and educator. Discover projects, writings, and more.`; 
-  const image = "https://cdn.sanity.io/images/cod4w9ou/production/c72faa4aa2c39e39b4f941284cd7f055ddb8e922-3889x4861.jpg"; 
-  const url = "http://minaogbanga.com/"; 
-
- return(
-<div
-  className="relative min-h-screen" 
-  style={{
-    backgroundImage: `url(${backgroundImage[0]?.image?.asset?.url})`,
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundAttachment: "fixed",
-  }}
-
- 
->
-
-<Helmet>
-  <title>{title}</title>
-  <meta name="description" content={description} />
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
-  <meta property="og:image" content={image} />
-  <meta property="og:url" content={url} />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content={authorName} />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={title} />
-  <meta name="twitter:description" content={description} />
-  <meta name="twitter:image" content={image} />
-</Helmet>
-
-  {/* Navbar */}
-  <header
-    className={`sticky top-0 z-50 transition-colors duration-300 ${
-      isScrolled ? "bg-black shadow-md" : "bg-transparent"
-    }`}
-  >
-    <div className="mx-auto max-w-[1200px]">
-      <Navbar />
-    </div>
-  </header>
-
-  {/* Main content */}
-  <main className="mx-auto max-w-[1200px] p-4 pb-16"> {/* Add padding-bottom to prevent overlap */}
-    <Outlet />
-  </main>
-
-  {/* Scroll to Top button */}
-  {showScrollToTop && (
-    <button
-      onClick={scrollToTop}
-      className="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-800 text-white p-3 rounded-full shadow-lg transition-all duration-300"
+  return (
+    <div
+      className="relative min-h-screen"
+      style={{
+        backgroundImage: `url(${backgroundImageUrl})`,
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "fixed",
+        minHeight: "100vh", 
+      }}
     >
-      <MdOutlineKeyboardArrowUp size={20} />
-    </button>
-  )}
+      {/* Navbar */}
+      <header
+        className={`sticky top-0 z-50 transition-colors duration-300 ${isScrolled ? "bg-black shadow-md" : "bg-transparent"}`}
+      >
+        <div className="mx-auto max-w-[1200px]">
+          <Navbar />
+        </div>
+      </header>
 
-  {/* Footer */}
-  <footer className="absolute bottom-0 w-full bg-gray-900 text-center py-2">
-    <Footer />
-  </footer>
-</div>
+      <main className="mx-auto max-w-[1200px] p-4 pb-16">
+        <Outlet />
+      </main>
 
- );
+      {showScrollToTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-800 text-white p-3 rounded-full shadow-lg transition-all duration-300 z-50"
+        >
+          <MdOutlineKeyboardArrowUp size={20} />
+        </button>
+      )}
+
+      {/* Footer */}
+      <footer className="absolute bottom-0 w-full bg-gray-900 text-center py-2">
+        <Footer />
+      </footer>
+    </div>
+  );
 };
 
 export default Layout;

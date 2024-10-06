@@ -8,7 +8,7 @@ interface DropdownProps{
 }
 
 const DropdownComponent:React.FC<DropdownProps> = ({ title, content, isActive, onToggle }) => {
-  console.log(content);
+ 
     return (
       <div className="flex flex-col gap-2 border-b border-white  ">
         <button

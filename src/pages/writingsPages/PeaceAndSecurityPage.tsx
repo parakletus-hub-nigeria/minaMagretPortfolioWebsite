@@ -9,7 +9,7 @@ import { useAuthorContext } from '../../hooks/AuthorContext';
     title: string;
     image: {
       asset: {
-        url: string;
+       _id:string
       };
     };
     url: string;

@@ -9,7 +9,7 @@ interface HonorsComponentProps{
 const HonorsComponent:React.FC<HonorsComponentProps> = ({title, listData, imgUrl}) => {
     return (
         <section>
-            <div className='flex flex-col gap-6 md:flex-row px-4 md:px-6 py-8'>
+            <div className='flex flex-col-reverse  gap-6 md:flex-row px-4 md:px-6 py-8'>
                 <div>
                 <span className='flex flex-col gap-2 pb-6 capitalize text-left font-bold text-white  border-b border-white'>
             <h2 className='text-2xl'>about me</h2>
@@ -27,7 +27,7 @@ const HonorsComponent:React.FC<HonorsComponentProps> = ({title, listData, imgUrl
                 </div>
     
                 <picture>
-                    <img src={imgUrl} className='md:max-w-[371px] md:max-h-[560px]' alt="" />
+                    <img src={imgUrl} className='md:max-w-[371px] md:max-h-[560px] ' alt="" />
                 </picture>
             </div>
         </section>

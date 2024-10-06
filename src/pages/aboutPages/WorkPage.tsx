@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LoaderFunction, useLoaderData } from 'react-router';
 import { fetchWorkPageInput } from '../../../sanityApiClient/useSanityClient';
 import { useAuthorContext } from '../../hooks/AuthorContext';
+import { urlFor } from '../../../sanityApiClient/sanityClient';
+import WholePageSpinner from '../../components/WholePageSpinner';
 
 interface WorkPageImage {
   asset: {
@@ -13,22 +15,21 @@ interface WorkPageImage {
 interface WorkPageHeading {
   style: string;
   _key: string;
-  markDefs: { href?: string; openInNewTab?: boolean }[]; // Ensure this reflects your structure
+  markDefs: { href?: string; openInNewTab?: boolean }[]; 
   children: { text: string }[];
 }
 
 interface WorkPageResponse {
-  heading: WorkPageHeading[]; // Changed to use the defined interface
+  heading: WorkPageHeading[];
   description: string;
-  image: WorkPageImage; // Changed to use the defined interface
+  image: WorkPageImage;
 }
 
 export const workPageLoader: LoaderFunction = async () => {
   try {
     const workPageResponse = await fetchWorkPageInput();
-
-    if (!workPageResponse || workPageResponse.length === 0) {
-      throw new Error('Profile Page text not found');
+     if (!workPageResponse || workPageResponse.length === 0) {
+      throw new Error('Work Page input data not found');
     }
 
     return { workPageResponse };
@@ -38,14 +39,44 @@ export const workPageLoader: LoaderFunction = async () => {
 };
 
 const WorkPage: React.FC = () => {
-  const {authorName} = useAuthorContext();
-
+  const { authorName } = useAuthorContext();
+  const { workPageResponse } = useLoaderData() as { workPageResponse: WorkPageResponse[] };
+  
+  const [loadedImagesCount, setLoadedImagesCount] = useState(0);
+  const [preloadedImages, setPreloadedImages] = useState<string[]>([]);
+  const totalImages = workPageResponse.length;
 
   useEffect(() => {
-     document.title = `My Work - ${authorName}`;
-   }, [authorName]);
+    document.title = `My Work - ${authorName}`;
 
-  const { workPageResponse } = useLoaderData() as { workPageResponse: WorkPageResponse[] };
+    const images: string[] = [];
+
+    const handleImageLoad = () => {
+      setLoadedImagesCount((prevCount) => prevCount + 1);
+    };
+
+    workPageResponse.forEach((item) => {
+      const imgUrl = urlFor(item.image.asset._id).width(1920).quality(80).format('webp').url();
+      images.push(imgUrl); 
+      const img = new Image();
+      img.src = imgUrl;
+      img.onload = handleImageLoad;
+    });
+
+    setPreloadedImages(images); 
+
+    return () => {
+      
+    };
+  }, [authorName, workPageResponse]);
+
+
+
+  if (loadedImagesCount < totalImages) {
+    return (
+     <WholePageSpinner/>
+    );
+  }
 
   return (
     <section>
@@ -58,20 +89,18 @@ const WorkPage: React.FC = () => {
             </span>
 
             <div className="flex flex-col gap-4">
-              {workPageResponse.map((ele) => (
+              {workPageResponse.map((ele, index) => (
                 <div key={ele.image.asset._id} className="flex flex-col md:flex-row gap-4 items-start pt-4">
                   <img
-                    src={ele.image.asset.url || '/path/to/fallback-image.jpg'} // Use the fetched image URL
+                    src={preloadedImages[index]} // Use the preloaded image URL
                     className="w-full md:w-[153px] md:h-[132px] max-w-[100%] object-contain"
-                    alt={ele.description} // Changed alt text to use description
+                    alt={ele.description} // Use description as alt text
                   />
                   <div className="flex flex-col justify-start md:justify-between">
-                    {/* Map over the heading array to render the appropriate tag */}
                     {ele.heading.map((headingItem) => {
-                      const linkDef = headingItem.markDefs[0]; // Assuming first markDef holds the link
-                      const content = headingItem.children[0]?.text; // Get the text from children with optional chaining
+                      const linkDef = headingItem.markDefs[0];
+                      const content = headingItem.children[0]?.text; 
 
-                      // Check if link is defined
                       return linkDef && linkDef.href ? (
                         <a
                           key={headingItem._key}
@@ -103,3 +132,4 @@ const WorkPage: React.FC = () => {
 }
 
 export default WorkPage;
+
