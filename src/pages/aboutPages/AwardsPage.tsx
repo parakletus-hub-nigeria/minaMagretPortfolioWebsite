@@ -72,7 +72,9 @@ const AwardsPage: React.FC = () => {
   }, [authorName, awardsPageHeroImage]);
 
   if (!isImageLoaded) {
-    return <WholePageSpinner />;
+    <div className='z-[999]'>
+        <WholePageSpinner/>
+      </div>
   }
 
   return (

@@ -49,7 +49,9 @@ const WritingsComponent: React.FC<Partial<WritingsProps>> = ({ title, linksData,
 
   // Show loading spinner until all images are loaded
   if (loadedImagesCount < totalImages) {
-    return <WholePageSpinner />;
+    <div className='z-[999]'>
+        <WholePageSpinner/>
+      </div>
   }
 
   return (

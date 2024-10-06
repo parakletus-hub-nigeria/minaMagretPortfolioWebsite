@@ -73,7 +73,9 @@ const FellowShipSchloarshipPage: React.FC = () => {
   }, [authorName, fellowshipsAndSchloarshipsHeroImage]);
 
   if (!isImageLoaded) {
-    return <WholePageSpinner />;
+    <div className='z-[999]'>
+        <WholePageSpinner/>
+      </div>
   }
 
   return (

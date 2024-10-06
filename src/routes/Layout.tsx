@@ -75,9 +75,10 @@ const Layout: React.FC = () => {
   return (
     <div className="relative min-h-screen">
      <div
-      className="absolute inset-0 bg-fixed bg-cover bg-center z-0"
+      className="absolute inset-0 bg-fixed bg-cover bg-center min-h-screen  z-0"
       style={{
         backgroundImage: `url(${backgroundImageUrl})`,
+
       }}
     >
   
@@ -86,7 +87,7 @@ const Layout: React.FC = () => {
   
   
     <header
-      className={`sticky top-0 z-50 transition-colors duration-300 ${
+      className={`sticky top-0 z-0 transition-colors duration-300 ${
         isScrolled ? "bg-black shadow-md" : "bg-transparent"
       }`}
       style={{ zIndex: 100 }} // Ensure the header is above everything
@@ -110,7 +111,7 @@ const Layout: React.FC = () => {
     )}
   
    
-    <footer className="relative z-10 w-full bg-gray-900 text-center py-2">
+    <footer className="relative  w-full bg-gray-900 text-center py-2">
       <Footer />
     </footer>
   </div>

@@ -73,9 +73,9 @@ const WorkPage: React.FC = () => {
 
 
   if (loadedImagesCount < totalImages) {
-    return (
-     <WholePageSpinner/>
-    );
+    <div className='z-[999]'>
+        <WholePageSpinner/>
+      </div>
   }
 
   return (

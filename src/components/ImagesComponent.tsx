@@ -38,7 +38,9 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({ images }) => {
 
   // Loading state while images are being loaded
   if (loadedImagesCount < totalImages) {
-    return <WholePageSpinner />;
+    <div className='z-[999]'>
+        <WholePageSpinner/>
+      </div>
   }
 
   return (

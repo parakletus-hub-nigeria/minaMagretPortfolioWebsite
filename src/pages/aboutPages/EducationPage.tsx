@@ -79,7 +79,9 @@ const EducationPage: React.FC = () => {
 
 
   if (!isImageLoaded) {
-    return <WholePageSpinner />;
+    <div className='z-[999]'>
+        <WholePageSpinner/>
+      </div>
   }
 
   return (
