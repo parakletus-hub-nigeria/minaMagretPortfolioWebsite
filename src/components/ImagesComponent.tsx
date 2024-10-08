@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { urlFor } from '../../sanityApiClient/sanityClient';
+
 import ImageViewer from './ImageViewerComponent';
 import WholePageSpinner from './WholePageSpinner';
 import { useAuthorContext } from '../hooks/AuthorContext';

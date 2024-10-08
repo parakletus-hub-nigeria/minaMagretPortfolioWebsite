@@ -15,11 +15,6 @@ import PortraitsPage from '../pages/GalleryPages/PicturesPages/PotraitsPage';
 import NewsPage from '../pages/GalleryPages/NewsPage';
 import BlogPage from '../pages/BlogPage';
 import ContactPage from '../pages/ContactPage';
-import CampaignsPage from '../pages/GalleryPages/PicturesPages/CampaignsPage';
-import EventsPage from '../pages/GalleryPages/PicturesPages/EventsPage';
-import GraduationsPage from '../pages/GalleryPages/PicturesPages/GraduationsPage';
-import PotraitsPage from '../pages/GalleryPages/PicturesPages/PotraitsPage';
-import SpeakingEngagementPage from '../pages/GalleryPages/PicturesPages/SpeakingEngagementPage';
 import ErrorPage from '../pages/ErrorPage';
 
 const router = createBrowserRouter([
