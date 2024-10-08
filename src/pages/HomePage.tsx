@@ -1,97 +1,89 @@
+
 import React, { useEffect, useState } from 'react';
-import { Link, useLoaderData, LoaderFunction } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../assets/styles/App.css';
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import { useQuery } from '@tanstack/react-query';
 import { fetchBackgroundImage, fetchHomePageHeroImage } from '../../sanityApiClient/useSanityClient';
 import { useAuthorContext } from '../hooks/AuthorContext';
 import { urlFor } from '../../sanityApiClient/sanityClient';
 import WholePageSpinner from '../components/WholePageSpinner';
 
-interface ImageAsset {
-  _id: string;
-  url: string;
-}
+// Combined fetching function
+const fetchImages = async () => {
+  const [backgroundImage, homePageHeroImage] = await Promise.all([
+    fetchBackgroundImage(),
+    fetchHomePageHeroImage(),
+  ]);
 
-interface Image {
-  asset: ImageAsset;
-}
-
-interface BackgroundImage {
-  image: Image;
-}
-
-interface HomePageHeroImage {
-  image: Image;
-}
-
-interface HomePageLoaderData {
-  backgroundImage: BackgroundImage[];
-  homePageHeroImage: HomePageHeroImage[];
-}
-
-// Loader for fetching homepage images
-export const HomePageLoader: LoaderFunction = async () => {
-  try {
-    const backgroundImage = await fetchBackgroundImage();
-    const homePageHeroImage = await fetchHomePageHeroImage();
-
-    if (!backgroundImage || backgroundImage.length === 0) {
-      throw new Error('Background image not found');
-    }
-
-    if (!homePageHeroImage || homePageHeroImage.length === 0) {
-      throw new Error('Hero image not found');
-    }
-
-    return { backgroundImage, homePageHeroImage };
-  } catch (error) {
-    throw new Response('Failed to load one or more images', { status: 500 });
+  if (!backgroundImage || backgroundImage.length === 0) {
+    throw new Error('Background image not found');
   }
+  if (!homePageHeroImage || homePageHeroImage.length === 0) {
+    throw new Error('Hero image not found');
+  }
+
+  return { backgroundImage, homePageHeroImage };
 };
 
+
 const HomePage: React.FC = () => {
-  const { backgroundImage, homePageHeroImage } = useLoaderData() as HomePageLoaderData;
   const { authorName } = useAuthorContext();
+
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['images'],
+    queryFn: fetchImages,
+    staleTime: 0, 
+  });
 
   const [isImagesLoaded, setIsImagesLoaded] = useState(false);
   const [backgroundImgUrl, setBackgroundImgUrl] = useState('');
   const [heroImgUrl, setHeroImgUrl] = useState('');
 
   useEffect(() => {
-    document.title = `Homepage - ${authorName}`; // Dynamic title for better SEO
+   
+    document.title = `Homepage - ${authorName}`;
 
-    const preloadImages = (srcArray: string[], callback: () => void) => {
-      let loadedCount = 0;
-      srcArray.forEach((src) => {
-        const img = new Image();
-        img.src = src;
-        img.onload = () => {
-          loadedCount += 1;
-          if (loadedCount === srcArray.length) {
-            callback();
-          }
-        };
+  
+    if (data) {
+      const bgUrl = urlFor(data.backgroundImage[0]?.image?.asset?._id)
+        .width(1920)
+        .quality(80)
+        .format('webp')
+        .url();
+      const heroUrl = urlFor(data.homePageHeroImage[0]?.image?.asset?._id)
+        .width(1920)
+        .quality(80)
+        .format('webp')
+        .url();
+
+      setBackgroundImgUrl(bgUrl);
+      setHeroImgUrl(heroUrl);
+
+   
+      const preloadImages = (srcArray: string[], callback: () => void) => {
+        let loadedCount = 0;
+        srcArray.forEach((src) => {
+          const img = new Image();
+          img.src = src;
+          img.onload = () => {
+            loadedCount += 1;
+            if (loadedCount === srcArray.length) {
+              callback();
+            }
+          };
+        });
+      };
+
+      preloadImages([bgUrl, heroUrl], () => {
+        setIsImagesLoaded(true);
       });
-    };
+    }
+  }, [data, authorName]);
 
-  
-    const bgUrl = urlFor(backgroundImage[0]?.image?.asset?._id).width(1920).quality(80).format('webp').url();
-    const heroUrl = urlFor(homePageHeroImage[0]?.image?.asset?._id).width(1920).quality(80).format('webp').url();
-
-
-    setBackgroundImgUrl(bgUrl);
-    setHeroImgUrl(heroUrl);
-
-  
-    preloadImages([bgUrl, heroUrl], () => {
-      setIsImagesLoaded(true);
-    });
-  }, [backgroundImage, homePageHeroImage, authorName]);
-
-  if (!isImagesLoaded) {
-    return (
-     <WholePageSpinner/>
-    );
+  if (isLoading || !isImagesLoaded) {
+    return <WholePageSpinner />;
   }
 
   return (
@@ -116,12 +108,12 @@ const HomePage: React.FC = () => {
               <img
                 srcSet={`
                   ${heroImgUrl} 1920w,
-                  ${urlFor(homePageHeroImage[0]?.image?.asset?._id).width(768).quality(80).format('webp').url()} 768w,
-                  ${urlFor(homePageHeroImage[0]?.image?.asset?._id).width(480).quality(80).format('webp').url()} 480w
+                  ${urlFor(data?.homePageHeroImage[0]?.image?.asset?._id).width(768).quality(80).format('webp').url()} 768w,
+                  ${urlFor(data?.homePageHeroImage[0]?.image?.asset?._id).width(480).quality(80).format('webp').url()} 480w
                 `}
                 sizes="(max-width: 480px) 480px, (max-width: 768px) 768px, 1920px"
                 src={heroImgUrl}
-                alt={`portrait of ${authorName}`}
+                alt={`Portrait of ${authorName}`}
                 className='w-full h-full object-cover'
                 loading="lazy"
               />

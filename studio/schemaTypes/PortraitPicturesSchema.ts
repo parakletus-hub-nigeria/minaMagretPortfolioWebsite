@@ -1,8 +1,8 @@
 import { defineType, defineField } from 'sanity';
 
 export default defineType({
-  name: 'fieldWorkPictures',
-  title: 'Pictures for Field Work',
+  name: 'PortraitPictures',
+  title: 'Portrait Pictures',
   type: 'document',
   fields: [
     defineField({
@@ -12,14 +12,12 @@ export default defineType({
       validation: (Rule) => Rule.required().min(1).max(100),
     }),
     defineField({
-      name: 'imageUrl',
-      title: 'Image URL',
-      type: 'url',
-      validation: (Rule) =>
-        Rule.required().uri({
-          scheme: ['http', 'https'],
-          allowRelative: true,
-        }),
+      name: 'image',
+      title: 'Image',
+      type: 'image',
+      options: {
+      hotspot: true, 
+      },
     }),
     defineField({
       name: 'description',

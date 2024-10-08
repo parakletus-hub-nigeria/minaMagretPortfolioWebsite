@@ -4,12 +4,13 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { Link } from 'react-router-dom';
 import { useAuthorContext } from '../hooks/AuthorContext';
 import { FaXmark } from "react-icons/fa6";
-import { motion } from 'framer-motion'
+import { motion } from 'framer-motion';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
   const [expandedSubMenu, setExpandedSubMenu] = useState<string | null>(null);
+  const {authorName, authorLogoUrl} = useAuthorContext();
  
 
   const toggleNavbar = () => setIsOpen(!isOpen);
@@ -57,12 +58,12 @@ const Navbar = () => {
   const linkClassName = ({ isActive }: { isActive: boolean }) =>
     isActive ? 'text-blue-500' : 'text-white';
 
-const {authorLogoUrl} = useAuthorContext();
+
   return (
     <nav className="bg-transparent text-white px-4 py-3 md:flex md:justify-between">
       <div className="flex justify-between items-center">
         <Link to={'/home'}>
-        <img src={authorLogoUrl} className='w-fit h-fit max-w-[120px] max-h-[120px]' alt="author logo" />
+        <img src={authorLogoUrl} className='w-fit h-fit max-w-[120px] max-h-[120px]'   alt={`Website Logo of ${authorName}`} />
         </Link>
         <div className="md:hidden" onClick={toggleNavbar}>
           <button className="text-white focus:outline-none" aria-label="Toggle Menu">
@@ -218,34 +219,10 @@ const {authorLogoUrl} = useAuthorContext();
               }`}
             >
               <ul className="ml-4 mt-2 space-y-2">
+              
                 <li>
-                  <NavLink to="/gallery/pictures/field-work" className={linkClassName} onClick={toggleNavbar}>
-                    Field Work
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/gallery/pictures/campaigns" className={linkClassName} onClick={toggleNavbar}>
-                    Campaigns
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/gallery/pictures/graduations" className={linkClassName} onClick={toggleNavbar}>
-                    Graduations
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/gallery/pictures/speaking-engagements" className={linkClassName} onClick={toggleNavbar}>
-                    Speaking Engagements
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/gallery/pictures/events" className={linkClassName} onClick={toggleNavbar}>
-                    Events
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/gallery/pictures/potraits" className={linkClassName} onClick={toggleNavbar}>
-                    Potraits
+                  <NavLink to="/gallery/pictures/portraits" className={linkClassName} onClick={toggleNavbar}>
+                    Portraits
                   </NavLink>
                 </li>
 
@@ -450,16 +427,7 @@ const {authorLogoUrl} = useAuthorContext();
               }}
             >
               <ul className="py-4 px-4 text-sm font-normal text-left flex flex-col gap-2 capitalize">
-                <li>
-                  <NavLink to="/gallery/pictures/travel" className={linkClassName}>
-                    Travel
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/gallery/pictures/events" className={linkClassName}>
-                    Events
-                  </NavLink>
-                </li>
+              
                 <li>
                   <NavLink to="/gallery/pictures/portraits" className={linkClassName}>
                     Portraits
@@ -467,6 +435,11 @@ const {authorLogoUrl} = useAuthorContext();
                 </li>
               </ul>
             </div>
+          </li>
+          <li>
+            <NavLink to="/gallery/news" className={linkClassName} onClick={toggleNavbar}>
+              News
+            </NavLink>
           </li>
         </ul>
       </div>

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useLoaderData } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
 import { fetchProfilePageHeroImage, fetchProfilePageText } from '../../../sanityApiClient/useSanityClient';
 import { useAuthorContext } from '../../hooks/AuthorContext';
 import { urlFor } from '../../../sanityApiClient/sanityClient';
 import WholePageSpinner from '../../components/WholePageSpinner';
 
-export interface FetchProfilePageHeroImageResponse {
+interface FetchProfilePageHeroImageResponse {
   image: {
     asset: {
       _id: string;
@@ -13,7 +13,7 @@ export interface FetchProfilePageHeroImageResponse {
   };
 }
 
-export interface FetchProfilePageTextResponse {
+interface FetchProfilePageTextResponse {
   _id: string;
   content: {
     _key: string;
@@ -30,57 +30,56 @@ export interface FetchProfilePageTextResponse {
   }[];
 }
 
-export const profilePageLoader = async () => {
-  try {
-    const profilePageHeroImage = await fetchProfilePageHeroImage();
-    const profilePageText = await fetchProfilePageText();
+interface ProfilePageData {
+  profilePageHeroImage: FetchProfilePageHeroImageResponse[];
+  profilePageText: FetchProfilePageTextResponse[];
+}
 
-    if (!profilePageHeroImage || profilePageHeroImage.length === 0) {
-      throw new Error('Hero image not found');
-    }
+const fetchProfilePageData = async (): Promise<ProfilePageData> => {
+  const profilePageHeroImage = await fetchProfilePageHeroImage();
+  const profilePageText = await fetchProfilePageText();
 
-    if (!profilePageText || profilePageText.length === 0) {
-      throw new Error('Profile Page text not found');
-    }
-
-    return { profilePageHeroImage, profilePageText };
-  } catch (error) {
-    throw new Response('Failed to load one or more items', { status: 500 });
+  if (!profilePageHeroImage || profilePageHeroImage.length === 0) {
+    throw new Error('Hero image not found');
   }
+  if (!profilePageText || profilePageText.length === 0) {
+    throw new Error('Profile Page text not found');
+  }
+
+  return { profilePageHeroImage, profilePageText };
 };
 
 const ProfilePage: React.FC = () => {
   const { authorName } = useAuthorContext();
-  const { profilePageHeroImage, profilePageText } = useLoaderData() as {
-    profilePageHeroImage: FetchProfilePageHeroImageResponse[];
-    profilePageText: FetchProfilePageTextResponse[];
-  };
-
+  const { data, isLoading } = useQuery<ProfilePageData>({
+    queryKey: ['profilePageData'],  
+    queryFn: fetchProfilePageData,  
+  });
+  
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [profileImgUrl, setProfileImgUrl] = useState('');
 
   useEffect(() => {
     document.title = `Profile Page - ${authorName}`;
-    const profileUrl = urlFor(profilePageHeroImage[0]?.image?.asset?._id)
-      .width(1920)
-      .quality(80)
-      .format('webp')
-      .url();
-    setProfileImgUrl(profileUrl);
-    
-    const profileImg = new Image();
-    profileImg.src = profileUrl;
-    profileImg.onload = () => {
-      setIsImageLoaded(true);
-    };
-  }, [authorName, profilePageHeroImage]);
 
-  if (!isImageLoaded) {
-    return (
-      <div className='z-[999]'>
-        <WholePageSpinner/>
-      </div>
-    );
+    if (data) {
+      const profileUrl = urlFor(data.profilePageHeroImage[0].image.asset._id)
+        .width(1920)
+        .quality(80)
+        .format('webp')
+        .url();
+      setProfileImgUrl(profileUrl);
+
+      const profileImg = new Image();
+      profileImg.src = profileUrl;
+      profileImg.onload = () => {
+        setIsImageLoaded(true);
+      };
+    }
+  }, [data, authorName]);
+
+  if (isLoading || !isImageLoaded) {
+    return <WholePageSpinner />;
   }
 
   return (
@@ -89,12 +88,12 @@ const ProfilePage: React.FC = () => {
         <img
           srcSet={`
             ${profileImgUrl} 1920w,
-            ${urlFor(profilePageHeroImage[0]?.image?.asset?._id)
+            ${urlFor(data?.profilePageHeroImage[0]?.image?.asset?._id)
               .width(768)
               .quality(80)
               .format('webp')
               .url()} 768w,
-            ${urlFor(profilePageHeroImage[0]?.image?.asset?._id)
+            ${urlFor(data?.profilePageHeroImage[0]?.image?.asset?._id)
               .width(480)
               .quality(80)
               .format('webp')
@@ -114,7 +113,7 @@ const ProfilePage: React.FC = () => {
         </span>
 
         <div className="flex flex-col gap-8 pt-6 md:block">
-          {profilePageText.map((paragraph) => (
+          {data?.profilePageText.map((paragraph) => (
             <div key={paragraph._id} className="paragraph flex flex-col gap-8 md:block">
               {paragraph.content.map((block) => (
                 <p key={block._key} className="text-white text-base font-normal leading-7 tracking-wide text-justify md:my-6">

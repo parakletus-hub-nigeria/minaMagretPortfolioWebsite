@@ -4,14 +4,14 @@ import { urlFor } from '../../sanityApiClient/sanityClient';
 
 interface LinksDataProps {
   title: string;
-  url: string;  
+  url: string;
 }
 
 interface BooksDataProps {
   title: string;
   image: {
     asset: {
-        _id: string;
+      _id: string;
     };
   };
   url: string;
@@ -20,13 +20,13 @@ interface BooksDataProps {
 interface WritingsProps {
   title: string;
   linksData: LinksDataProps[];
-  booksData: BooksDataProps[]; 
+  booksData: BooksDataProps[];
 }
 
 const WritingsComponent: React.FC<Partial<WritingsProps>> = ({ title, linksData, booksData }) => {
   const [loadedImagesCount, setLoadedImagesCount] = useState(0);
-  const [imageUrls, setImageUrls] = useState<string[]>([]); // State to hold preloaded image URLs
-  const totalImages = booksData ? booksData.length : 0; // Total number of images to load
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const totalImages = booksData ? booksData.length : 0;
 
   useEffect(() => {
     const handleImageLoad = () => {
@@ -34,24 +34,28 @@ const WritingsComponent: React.FC<Partial<WritingsProps>> = ({ title, linksData,
     };
 
     if (booksData) {
-      const urls = booksData.map(bookData => urlFor(bookData.image.asset._id).width(1920).quality(80).format('webp').url());
-      setImageUrls(urls); // Store preloaded image URLs in state
+      const urls = booksData.map(bookData =>
+        urlFor(bookData.image.asset._id).width(1920).quality(80).format('webp').url()
+      );
+      setImageUrls(urls);
 
-      // Preload images
+     
       urls.forEach(url => {
         const img = new Image();
-        img.src = url; // Set the source to the preloaded URL
+        img.src = url;
         img.onload = handleImageLoad;
-        img.onerror = handleImageLoad; // Count on error to avoid blocking
+        img.onerror = handleImageLoad; 
       });
     }
   }, [booksData]);
 
-  // Show loading spinner until all images are loaded
+
   if (loadedImagesCount < totalImages) {
-    <div className='z-[999]'>
-        <WholePageSpinner/>
-      </div>
+    return (
+    
+        <WholePageSpinner />
+     
+    );
   }
 
   return (
@@ -68,7 +72,7 @@ const WritingsComponent: React.FC<Partial<WritingsProps>> = ({ title, linksData,
               <ul className='pl-6 md:pl-16'>
                 {linksData.map((ele, i) => (
                   <li key={i} className='text-blue-500 list-disc pl-2 font-semibold text-base'>
-                    <a href={`${ele.url}`}>{ele.title}</a>
+                    <a href={ele.url} target="_blank" rel="noopener noreferrer">{ele.title}</a>
                   </li>
                 ))}
               </ul>
@@ -78,9 +82,9 @@ const WritingsComponent: React.FC<Partial<WritingsProps>> = ({ title, linksData,
           {booksData && (
             <div className='flex md:flex-row gap-6 flex-wrap'>
               {booksData.map((bookData, i) => (
-                <a key={i} href={`${bookData.url}`}>
+                <a key={i} href={bookData.url} target="_blank" rel="noopener noreferrer">
                   <picture className='flex flex-col items-center justify-center md:max-h-[295px] md:max-w-[210px]'>
-                    <img src={imageUrls[i]} className='w-full h-full' alt={`${bookData.title}`} />
+                    <img src={imageUrls[i]} className='w-full h-full' alt={bookData.title} />
                     <p className='text-center text-white'>{bookData.title}</p>
                   </picture>
                 </a>
@@ -91,6 +95,6 @@ const WritingsComponent: React.FC<Partial<WritingsProps>> = ({ title, linksData,
       </div>
     </section>
   );
-}
+};
 
 export default WritingsComponent;

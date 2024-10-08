@@ -17,7 +17,7 @@ import PeaceAndSecurityImageBookLink  from './PeaceAndSecurityImageBookLinkSchem
 import WomenAndGirlsBookLink from './WomenAndGirlsBookLinkSchema';
 import WomenAndGirlsImageBookLink from './WomenAndGirlsImageBookLinkSchema';
 import Videos from './VideosSchema';
-import fieldWork from './FieldWorkSchema';
+import PortraitPictures from './PortraitPicturesSchema';
 import NewsLink from './NewsLinksSchema';
 import Socials from './SocialsSchema';
 
@@ -41,6 +41,6 @@ PeaceAndSecurityImageBookLink,
 WomenAndGirlsBookLink,
 WomenAndGirlsImageBookLink,
 Videos,
-fieldWork,
+PortraitPictures,
 NewsLink,
 Socials];

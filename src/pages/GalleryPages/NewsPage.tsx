@@ -1,41 +1,38 @@
 import React, { useEffect } from 'react';
-import { LoaderFunction, useLoaderData } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
 import { fetchNewsLinks } from '../../../sanityApiClient/useSanityClient';
 import { useAuthorContext } from '../../hooks/AuthorContext';
+import WholePageSpinner from '../../components/WholePageSpinner';
 
 export interface NewsLink {
-    _id: string; // Unique identifier for the link document
-    url: string; // URL of the link
+    _id: string;
+    urls: string[];  
 }
-
-export interface NewsLinksResponse {
-    newsLinks: NewsLink[]; // Array of link documents
-}
-
-export const newsPageLoader: LoaderFunction = async () => {
-    try {
-        const newsLinks = await fetchNewsLinks();
-
-        if (!newsLinks || newsLinks.length === 0) {
-            throw new Error('No news links found');
-        }
-
-        return { newsLinks }; 
-    } catch (error) {
-        console.error('Error fetching links:', error);
-        throw new Response('Error loading links', { status: 500 });
-    }
-};
 
 const NewsPage: React.FC = () => {
-    const { newsLinks } = useLoaderData() as NewsLinksResponse; 
-    console.log(newsLinks);
-
     const { authorName } = useAuthorContext();
+
+    const { data: newsLinks = [], error, isLoading } = useQuery<NewsLink[], Error>({
+        queryKey: ['newsLinks'],
+        queryFn: fetchNewsLinks,
+        staleTime: 0
+    });
 
     useEffect(() => {
         document.title = `News - ${authorName}`;
     }, [authorName]);
+
+    if (isLoading) {
+        return <WholePageSpinner />;
+    }
+
+    if (error) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <p className="text-red-500 text-lg">Error loading news links: {error.message}</p>
+            </div>
+        );
+    }
 
     return (
         <section>
@@ -46,15 +43,15 @@ const NewsPage: React.FC = () => {
 
                 <div>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {newsLinks.map((link) => (
-                            <li key={link._id} className='list-disc md:pl-2 marker:text-[#E19618] marker:text-lg'>
+                        {newsLinks[0]?.urls.map((link) => (
+                            <li key={link} className='list-disc md:pl-2 marker:text-[#E19618] marker:text-lg'>
                                 <a
-                                    href={link.url} // Accessing the URL directly
+                                    href={link}
                                     className="block text-blue-500 text-lg font-semibold hover:underline hover:text-orange-500 break-words"
-                                    target="_blank" // Open link in a new tab
-                                    rel="noopener noreferrer" // Security best practice
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                 >
-                                    {link.url} // Display the URL
+                                    {link}
                                 </a>
                             </li>
                         ))}
@@ -66,3 +63,4 @@ const NewsPage: React.FC = () => {
 }
 
 export default NewsPage;
+

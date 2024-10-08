@@ -38,43 +38,49 @@ export const awardsPageLoader: LoaderFunction = async () => {
       awardsPageHeroImage,
     };
   } catch (error) {
-    console.error('Failed to load education page data:', error);
-    throw new Response('Failed to load education page data', { status: 500 });
+    console.error('Failed to load awards page data:', error);
+    throw new Response('Failed to load awards page data', { status: 500 });
   }
 };
 
 const AwardsPage: React.FC = () => {
   const { awardsPageInput, awardsPageHeroImage } = useLoaderData() as AwardsPageData;
-  
   const { authorName } = useAuthorContext();
+  
   const [awardsPageHeroImageUrl, setAwardsPageHeroImageUrl] = useState('');
-  const [isImageLoaded, setIsImageLoaded] = useState(false); // State for image loading
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   useEffect(() => {
     document.title = `Awards And Scholarships - ${authorName}`;
 
-    const img = new Image();
-    img.src = urlFor(awardsPageHeroImage[0].image.asset._id)  
-      .width(1920)
-      .quality(80)
-      .format('webp')
-      .url();
+    if (awardsPageHeroImage.length > 0) {
+      const img = new Image();
+      const imgUrl = urlFor(awardsPageHeroImage[0].image.asset._id)  
+        .width(1920)
+        .quality(80)
+        .format('webp')
+        .url();
 
-    // Set the image URL and image loaded state in onload
-    img.onload = () => {
-      setAwardsPageHeroImageUrl(img.src);
-      setIsImageLoaded(true);
-    };
+      img.src = imgUrl;
 
-    return () => {
-      img.onload = null; // Cleanup the onload function
-    };
+      img.onload = () => {
+        setAwardsPageHeroImageUrl(imgUrl);
+        setIsImageLoaded(true);
+      };
+
+    
+      return () => {
+        img.onload = null;
+      };
+    }
   }, [authorName, awardsPageHeroImage]);
 
   if (!isImageLoaded) {
-    <div className='z-[999]'>
-        <WholePageSpinner/>
+    return (
+      <div className='z-[999]'>
+        <WholePageSpinner />
       </div>
+    );
   }
 
   return (

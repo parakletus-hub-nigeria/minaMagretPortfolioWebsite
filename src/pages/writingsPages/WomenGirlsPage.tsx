@@ -1,77 +1,73 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react';
 import WritingsComponent from '../../components/WritingsComponent';
-import { useLoaderData, LoaderFunction } from 'react-router';
-import { fetchWomenaAndGirlsBookLinks, fetchWomenAndGirlsImageBookLinks } from '../../../sanityApiClient/useSanityClient';
+import { useQuery } from '@tanstack/react-query';
+import { fetchWomenAndGirlsImageBookLinks, fetchWomenAndGirlsBookLinks} from '../../../sanityApiClient/useSanityClient';
 import { useAuthorContext } from '../../hooks/AuthorContext';
- 
+
 interface ImageBookLink {
   title: string;
   image: {
     asset: {
-     _id:string
+      _id: string;
     };
   };
   url: string;
 }
 
 interface BookLink {
-  items:{
+  items: {
     title: string;
     url: string;  
-
-  }[]
+  }[];
 }
 
-  export const womenAndGirlsPageLoader: LoaderFunction = async () => {
+interface WomenAndGirlsData {
+  womenAndGirlsImageBookLinks: ImageBookLink[];
+  womenAndGirlsBookLinks: BookLink[];
+}
 
-    try {
-      const womenAndGirlsImageBookLinks = await fetchWomenAndGirlsImageBookLinks();
-      const womenAndGirlsBookLinks = await fetchWomenaAndGirlsBookLinks();
-  
-      
-      if (!womenAndGirlsImageBookLinks || womenAndGirlsImageBookLinks.length === 0) {
-        throw new Error('No books found');
-      }
-  
-      
-      if (!womenAndGirlsBookLinks || womenAndGirlsBookLinks.length === 0) {
-        throw new Error('No books found');
-      }
-  
-      return { womenAndGirlsImageBookLinks, womenAndGirlsBookLinks  };
-    } catch (error) {
-      throw new Response('Failed to load link entries', { status: 500 });
-    }
-  };   
+const fetchWomenAndGirlsData = async (): Promise<WomenAndGirlsData> => {
+  const [imageLinks, bookLinks] = await Promise.all([
+    fetchWomenAndGirlsImageBookLinks(),
+    fetchWomenAndGirlsBookLinks()
+  ]);
 
+  if (!imageLinks.length || !bookLinks.length) {
+    throw new Error('No books found');
+  }
 
-const WomenGirlsPage:React.FC = () => {
-    
-  const {authorName} = useAuthorContext();
+  return { womenAndGirlsImageBookLinks: imageLinks, womenAndGirlsBookLinks: bookLinks };
+};
+
+const WomenGirlsPage: React.FC = () => {
+  const { authorName } = useAuthorContext();
 
   useEffect(() => {
-   document.title = `Women and Girls - ${authorName}`;
- }, [authorName]);
+    document.title = `Women and Girls - ${authorName}`;
+  }, [authorName]);
 
+  const { data } = useQuery<WomenAndGirlsData>({
+    queryKey: ['womenAndGirlsData'],
+    queryFn: fetchWomenAndGirlsData,
+  });
 
-  const {womenAndGirlsImageBookLinks, womenAndGirlsBookLinks } = useLoaderData() as {womenAndGirlsImageBookLinks:ImageBookLink[],
-    womenAndGirlsBookLinks:BookLink[]
-  };
+ 
 
-  console.log(womenAndGirlsImageBookLinks);
-  console.log(womenAndGirlsBookLinks);
+  const { womenAndGirlsImageBookLinks, womenAndGirlsBookLinks } = data!;
 
-      
-      return (
-       <section>
-    <div className='md:w-[85%] mx-auto px-4 md:px-6 py-8'>
-         
-          <div>
-            <WritingsComponent booksData={womenAndGirlsImageBookLinks} title={'Women and Girls'}  />
-          </div>
+  return (
+    <section>
+      <div className='md:w-[85%] mx-auto px-4 md:px-6 py-8'>
+        <div>
+          <WritingsComponent 
+            booksData={womenAndGirlsImageBookLinks} 
+            linksData={womenAndGirlsBookLinks[0].items} 
+            title={'Women and Girls'} 
+          />
         </div>
-       </section>
-      )
+      </div>
+    </section>
+  );
 }
 
 export default WomenGirlsPage;

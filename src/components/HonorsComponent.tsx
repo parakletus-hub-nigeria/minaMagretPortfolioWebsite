@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAuthorContext } from '../hooks/AuthorContext';
 
 interface HonorsComponentProps{
    title: string;
@@ -7,6 +8,7 @@ interface HonorsComponentProps{
 }
 
 const HonorsComponent:React.FC<HonorsComponentProps> = ({title, listData, imgUrl}) => {
+    const {authorName} = useAuthorContext();
     return (
         <section>
             <div className='flex flex-col-reverse  gap-6 md:flex-row px-4 md:px-6 py-8'>
@@ -27,7 +29,9 @@ const HonorsComponent:React.FC<HonorsComponentProps> = ({title, listData, imgUrl
                 </div>
     
                 <picture>
-                    <img src={imgUrl} className='md:max-w-[371px] md:max-h-[560px] ' alt="" />
+                    <img src={imgUrl} className='md:max-w-[371px] md:max-h-[560px] ' 
+                        alt={`Portrait of ${authorName}`}
+                    />
                 </picture>
             </div>
         </section>

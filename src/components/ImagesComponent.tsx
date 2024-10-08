@@ -1,46 +1,57 @@
 import React, { useEffect, useState } from 'react';
-import ImageViewer from './ImageViewerComponent';
 import { urlFor } from '../../sanityApiClient/sanityClient';
+import ImageViewer from './ImageViewerComponent';
 import WholePageSpinner from './WholePageSpinner';
+import { useAuthorContext } from '../hooks/AuthorContext';
+
+interface Image {
+  _id: string;
+  url: string;
+  title: string;
+  description: string;
+}
 
 interface ImagesComponentProps {
-  images: { _id: string; url: string; title: string; description: string }[]; // Assuming images are objects with URL, title, and description
+  images: Image[]; 
 }
 
 const ImagesComponent: React.FC<ImagesComponentProps> = ({ images }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [loadedImagesCount, setLoadedImagesCount] = useState(0);
   const [preloadedImages, setPreloadedImages] = useState<string[]>([]);
-  const totalImages = images.length;
+  const totalImages = images.length; 
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const {authorName} = useAuthorContext();
 
   useEffect(() => {
     const handleImageLoad = () => {
       setLoadedImagesCount((prevCount) => prevCount + 1);
     };
 
-    // Preload images and keep track of their load state
+   
     const imageUrls: string[] = images.map((image) => {
-      const imgUrl = urlFor(image._id).width(1920).quality(80).format('webp').url(); // Use _id directly from images
+      const imgUrl = image.url;
       const img = new Image();
       img.src = imgUrl;
-      img.onload = handleImageLoad; // Increment loaded count when each image is loaded
-      img.onerror = handleImageLoad; // Increment count even on error
+      img.onload = handleImageLoad; 
+      img.onerror = handleImageLoad;
       return imgUrl;
     });
 
-    setPreloadedImages(imageUrls); // Store the preloaded image URLs
+    setPreloadedImages(imageUrls); 
 
     return () => {
-      // Cleanup if necessary
+     
     };
   }, [images]);
 
-  // Loading state while images are being loaded
+ 
   if (loadedImagesCount < totalImages) {
-    <div className='z-[999]'>
-        <WholePageSpinner/>
-      </div>
+    return (
+      
+        <WholePageSpinner />
+      
+    );
   }
 
   return (
@@ -53,7 +64,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({ images }) => {
           }}>
             <img
               src={imageUrl}
-              alt={images[index].title || `Thumbnail ${index + 1}`} // Use title or fallback for alt text
+              alt={`Portrait of ${images[index].title} of ${authorName}`}
               className="w-full h-auto object-cover rounded-md shadow"
             />
           </div>

@@ -6,25 +6,24 @@ import { fetchBackgroundImage } from '../../sanityApiClient/useSanityClient';
 import Footer from '../components/Footer';
 import { urlFor } from '../../sanityApiClient/sanityClient'; // Ensure you import the urlFor function
 
-// Define the type for the asset
+
 interface BackgroundImageAsset {
-  _id: string; // Optional: include if you want to identify the asset
-  url: string; // The URL for the background image
+  _id: string; 
+  url: string;
 }
 
-// Define the type for the background image structure
+
 interface BackgroundImage {
   image: {
-    asset: BackgroundImageAsset; // The asset containing the image URL
+    asset: BackgroundImageAsset; 
   };
 }
 
-// Define the type for the data returned from the loader
+
 interface LayoutLoaderData {
-  backgroundImage: BackgroundImage[]; // Array of BackgroundImage
+  backgroundImage: BackgroundImage[]; 
 }
 
-// Define the loader function
 export const LayoutLoader: LoaderFunction = async () => {
   try {
     const backgroundImage = await fetchBackgroundImage();
@@ -87,17 +86,17 @@ const Layout: React.FC = () => {
   
   
     <header
-      className={`sticky top-0 z-0 transition-colors duration-300 ${
+      className={`sticky top-0  transition-colors duration-300 ${
         isScrolled ? "bg-black shadow-md" : "bg-transparent"
       }`}
-      style={{ zIndex: 100 }} // Ensure the header is above everything
+      style={{ zIndex: 100 }} 
     >
       <div className="mx-auto max-w-[1200px]">
         <Navbar />
       </div>
     </header>
  
-    <main className="relative z-10 mx-auto max-w-[1200px] p-4 pb-16">
+    <main className="relative  mx-auto max-w-[1200px] p-4 pb-16">
       <Outlet />
     </main>
   
@@ -111,9 +110,9 @@ const Layout: React.FC = () => {
     )}
   
    
-    <footer className="relative  w-full bg-gray-900 text-center py-2">
-      <Footer />
-    </footer>
+  <footer className="absolute bottom-0 left-0 w-full bg-gray-900 text-center py-2">
+        <Footer />
+      </footer>
   </div>
   
   );

@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import DropdownComponent from "../../components/DropdownComponent";
-import { LoaderFunction, useLoaderData } from "react-router";
-import { fetchEducationPageHeroImage, fetchEducationPageInput } from "../../../sanityApiClient/useSanityClient";
-import { useAuthorContext } from "../../hooks/AuthorContext";
-import WholePageSpinner from "../../components/WholePageSpinner";
-import { urlFor } from "../../../sanityApiClient/sanityClient";
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import DropdownComponent from '../../components/DropdownComponent';
+import { fetchEducationPageHeroImage, fetchEducationPageInput } from '../../../sanityApiClient/useSanityClient';
+import { useAuthorContext } from '../../hooks/AuthorContext';
+import WholePageSpinner from '../../components/WholePageSpinner';
+import { urlFor } from '../../../sanityApiClient/sanityClient';
 
 // Interface for the asset (image) structure
 interface ImageAsset {
@@ -32,25 +32,28 @@ interface EducationPageData {
   educationPageHeroImage: EducationPageHeroImageData[];
 }
 
-export const EducationPageLoader: LoaderFunction = async () => {
-  try {
-    const educationPageInput = await fetchEducationPageInput();
-    const educationPageHeroImage = await fetchEducationPageHeroImage();
+const fetchEducationPageData = async (): Promise<EducationPageData> => {
+  const educationPageInput = await fetchEducationPageInput();
+  const educationPageHeroImage = await fetchEducationPageHeroImage();
 
-    return {
-      educationPageInput,
-      educationPageHeroImage,
-    };
-  } catch (error) {
-    console.error('Failed to load education page data:', error);
-    throw new Response('Failed to load education page data', { status: 500 });
+  if (!educationPageInput || educationPageInput.length === 0) {
+    throw new Error('Education Page input not found');
   }
+  if (!educationPageHeroImage || educationPageHeroImage.length === 0) {
+    throw new Error('Hero image not found');
+  }
+
+  return { educationPageInput, educationPageHeroImage };
 };
 
 const EducationPage: React.FC = () => {
-  const { educationPageInput, educationPageHeroImage } = useLoaderData() as EducationPageData;
+  const { authorName } = useAuthorContext();
+  const { data, isLoading } = useQuery<EducationPageData>({
+    queryKey: ['educationPageData'],  
+    queryFn: fetchEducationPageData,  
+  });
 
-  const [activeDropdowns, setActiveDropdowns] = useState<boolean[]>(new Array(educationPageInput.length).fill(false));
+  const [activeDropdowns, setActiveDropdowns] = useState<boolean[]>(new Array(data?.educationPageInput.length).fill(false));
   const [educationPageHeroImageUrl, setEducationPageHeroImageUrl] = useState('');
   const [isImageLoaded, setIsImageLoaded] = useState(false); 
 
@@ -60,28 +63,28 @@ const EducationPage: React.FC = () => {
     );
   };
 
-  const { authorName } = useAuthorContext();
-
   useEffect(() => {
     document.title = `Education - ${authorName}`;
 
-    const img = new Image();
-    img.src = urlFor(educationPageHeroImage[0].image.asset.url).width(1920).quality(80).format('webp').url(); 
-    img.onload = () => {
-      setEducationPageHeroImageUrl(img.src);
-      setIsImageLoaded(true);
-    };
+    if (data) {
+      const imgUrl = urlFor(data.educationPageHeroImage[0].image.asset._id)
+        .width(1920)
+        .quality(80)
+        .format('webp')
+        .url();
 
-    return () => {
-      img.onload = null; // Cleanup the onload function
-    };
-  }, [authorName, educationPageHeroImage]);
+      const img = new Image();
+      img.src = imgUrl;
 
+      img.onload = () => {
+        setEducationPageHeroImageUrl(img.src);
+        setIsImageLoaded(true);
+      };
+    }
+  }, [data, authorName]);
 
-  if (!isImageLoaded) {
-    <div className='z-[999]'>
-        <WholePageSpinner/>
-      </div>
+  if (isLoading || !isImageLoaded) {
+    return <WholePageSpinner />;
   }
 
   return (
@@ -91,20 +94,20 @@ const EducationPage: React.FC = () => {
           <img
             src={educationPageHeroImageUrl}
             className="w-full h-full md:max-h-[560px] md:max-w-[371px]"
-            alt="blackwoman"
+            alt={`Portrait of ${authorName}`}
           />
         </picture>
 
         <div className="w-full md:w-3/4 md:ml-8">
           <span className="flex flex-col gap-2 pb-6 capitalize text-left font-bold text-white border-b border-white">
-            <h2 className="text-2xl">about me</h2>
-            <h1 className="text-4xl">education</h1>
+            <h2 className="text-2xl">About Me</h2>
+            <h1 className="text-4xl">Education</h1>
           </span>
 
           <div className="w-full mt-8 flex flex-col gap-2">
-            {educationPageInput.map((item, index) => (
+            {data?.educationPageInput.map((item, index) => (
               <DropdownComponent
-                key={index}
+                key={item._id}
                 title={item.placeOfStudy}
                 content={item.details}
                 isActive={activeDropdowns[index]}

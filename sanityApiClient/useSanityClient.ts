@@ -132,7 +132,7 @@ export const fetchWomenAndGirlsImageBookLinks = async () => {
 };
 
 
-export const fetchWomenaAndGirlsBookLinks = async () => {
+export const fetchWomenAndGirlsBookLinks = async () => {
   const query = `*[_type == "WomenAndGirlsBookLink"]{
   items[]{
     title,
@@ -182,20 +182,26 @@ export const fetchVideoLinks = async () => {
   return data;
 };
 
-
-export const fetchFieldWorkLinks = async ()=>{
-   const query = `
-  *[_type == "fieldWorkPictures"]{
-    _id,
-    imageTitle,
-    imageUrl,
-    description,
-    uploadedAt
-  }
+export const fetchPortaitPicturesLinks = async () => {
+  const query = `
+    *[_type == "PortraitPictures"]{
+      _id,
+      imageTitle,
+      description,
+      uploadedAt,
+      image {
+        asset -> {
+          _id,
+         
+        }
+      }
+    }
   `;
+
   const data = await sanityClient.fetch(query);
-  return data;
-}
+  return data;  
+};
+
 
 
 
@@ -209,6 +215,5 @@ export const fetchSocialLinks = async () => {
 export const fetchNewsLinks = async () => {
   const query = '*[_type == "NewsLinks"]'; 
   const data =  await sanityClient.fetch(query);
-  console.log(data);
   return data;
 };
