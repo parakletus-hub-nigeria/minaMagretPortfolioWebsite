@@ -46,16 +46,24 @@ const fetchEducationPageData = async (): Promise<EducationPageData> => {
   return { educationPageInput, educationPageHeroImage };
 };
 
+
 const EducationPage: React.FC = () => {
   const { authorName } = useAuthorContext();
   const { data, isLoading } = useQuery<EducationPageData>({
-    queryKey: ['educationPageData'],  
-    queryFn: fetchEducationPageData,  
+    queryKey: ['educationPageData'],
+    queryFn: fetchEducationPageData,
   });
 
-  const [activeDropdowns, setActiveDropdowns] = useState<boolean[]>(new Array(data?.educationPageInput.length).fill(false));
+  const [activeDropdowns, setActiveDropdowns] = useState<boolean[]>([]);
   const [educationPageHeroImageUrl, setEducationPageHeroImageUrl] = useState('');
-  const [isImageLoaded, setIsImageLoaded] = useState(false); 
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+
+  useEffect(() => {
+    if (data && data.educationPageInput) {
+      setActiveDropdowns(new Array(data.educationPageInput.length).fill(false));
+    }
+  }, [data]);
 
   const handleToggle = (index: number) => {
     setActiveDropdowns((prev) =>
@@ -66,7 +74,7 @@ const EducationPage: React.FC = () => {
   useEffect(() => {
     document.title = `Education - ${authorName}`;
 
-    if (data) {
+    if (data && data.educationPageHeroImage) {
       const imgUrl = urlFor(data.educationPageHeroImage[0].image.asset._id)
         .width(1920)
         .quality(80)
@@ -81,7 +89,11 @@ const EducationPage: React.FC = () => {
         setIsImageLoaded(true);
       };
     }
+
+
+
   }, [data, authorName]);
+
 
   if (isLoading || !isImageLoaded) {
     return <WholePageSpinner />;

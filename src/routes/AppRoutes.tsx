@@ -5,9 +5,7 @@ import ProfilePage from '../pages/aboutPages/ProfilePage';
 import WorkPage from '../pages/aboutPages/WorkPage';
 import EducationPage from '../pages/aboutPages/EducationPage';
 import FellowShipSchloarshipPage from '../pages/aboutPages/FellowShipSchloarshipPage';
-import LawHumanRightsPage from '../pages/writingsPages/LawHumanRightsPage';
-import WomenGirlsPage from '../pages/writingsPages/WomenGirlsPage';
-import PeaceAndSecurityPage from '../pages/writingsPages/PeaceAndSecurityPage';
+import ManualsPage from '../pages/writingsPages/ManualsPage';
 import VideosPage from '../pages/GalleryPages/VideosPage';
 import Layout, {LayoutLoader} from './Layout';
 import AwardsPage from '../pages/aboutPages/AwardsPage';
@@ -16,6 +14,8 @@ import NewsPage from '../pages/GalleryPages/NewsPage';
 import BlogPage from '../pages/BlogPage';
 import ContactPage from '../pages/ContactPage';
 import ErrorPage from '../pages/ErrorPage';
+import PapersPage from '../pages/writingsPages/PapersPage';
+import TextBooksPage from '../pages/writingsPages/TextBooksPage';
 
 const router = createBrowserRouter([
   {
@@ -70,15 +70,15 @@ const router = createBrowserRouter([
           },
           {
             path: "papers",
-            element: <LawHumanRightsPage />,
+            element: <PapersPage />,
           },
           {
             path: "textbooks",
-            element: <WomenGirlsPage />,
+            element: <TextBooksPage/>,
           },
           {
             path: "manuals",
-            element: <PeaceAndSecurityPage />,
+            element: <ManualsPage />,
           },
         ],
       },
@@ -99,12 +99,13 @@ const router = createBrowserRouter([
           },
           {
             path: "pictures",
-            children: [
-              {
-                path: "portraits",
-                element: <PortraitsPage />,
-              },
-            ],
+            element: <PortraitsPage />,
+            // children: [
+            //   {
+            //     path: "portraits",
+            //     element: <PortraitsPage />,
+            //   },
+            // ],
           },
         ],
       },

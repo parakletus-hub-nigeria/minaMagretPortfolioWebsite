@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
-  const [expandedSubMenu, setExpandedSubMenu] = useState<string | null>(null);
+  // const [expandedSubMenu, setExpandedSubMenu] = useState<string | null>(null);
   const {authorName, authorLogoUrl} = useAuthorContext();
  
 
@@ -18,9 +18,9 @@ const Navbar = () => {
   const toggleSubMenu = (menu: string) => {
     setExpandedMenu(expandedMenu === menu ? null : menu);
   };
-  const toggleSubSubMenu = (menu: string) => {
-    setExpandedSubMenu(expandedSubMenu === menu ? null : menu);
-  }; //I am bad with names hun?
+  // const toggleSubSubMenu = (menu: string) => {
+  //   setExpandedSubMenu(expandedSubMenu === menu ? null : menu);
+  // }; //I am bad with names hun?
 
   const handleMouseEnter = (menu: string) => {
     setExpandedMenu(menu);
@@ -46,14 +46,14 @@ const Navbar = () => {
     }
   };
 
-  const handleSubSubMenuKeyDown = (e: React.KeyboardEvent, menu: string) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      toggleSubSubMenu(menu);
-    } else if (e.key === 'Escape') {
-      setExpandedSubMenu(null);
-    }
-  };
+  // const handleSubSubMenuKeyDown = (e: React.KeyboardEvent, menu: string) => {
+  //   if (e.key === 'Enter' || e.key === ' ') {
+  //     e.preventDefault();
+  //     toggleSubSubMenu(menu);
+  //   } else if (e.key === 'Escape') {
+  //     setExpandedSubMenu(null);
+  //   }
+  // };
 
   const linkClassName = ({ isActive }: { isActive: boolean }) =>
     isActive ? 'text-blue-500' : 'text-white';
@@ -76,7 +76,7 @@ const Navbar = () => {
       <div
   className={`${
     isOpen ? 'translate-x-0' : '-translate-x-full'
-  } md:hidden fixed top-0 left-0 w-full h-full bg-black z-50 transition-transform duration-500`}
+  } md:hidden fixed top-0 left-0 w-full h-full bg-black z-50 transition-transform duration-700`}
 >
   <motion.div
    initial={{ opacity: 0 }}
@@ -204,7 +204,11 @@ const Navbar = () => {
             </NavLink>
           </li>
           <li>
-            <div
+          <NavLink to="/gallery/pictures" className={linkClassName} onClick={toggleNavbar}>
+                    {/* Portraits */}
+                    Pictures
+                  </NavLink>
+            {/* <div
               className="cursor-pointer flex justify-between items-center"
               onClick={() => toggleSubSubMenu('pictures')}
               onKeyDown={(e) => handleSubSubMenuKeyDown(e, 'pictures')}
@@ -227,7 +231,7 @@ const Navbar = () => {
                 </li>
 
               </ul>
-            </div>
+            </div> */}
           </li>
           <li>
             <NavLink to="/gallery/news" className={linkClassName} onClick={toggleNavbar}>
@@ -404,21 +408,21 @@ const Navbar = () => {
           </li>
           <li
             className="relative"
-            onMouseEnter={() => setExpandedSubMenu('pictures')}
-            onMouseLeave={() => setExpandedSubMenu(null)}
-            onFocus={() => setExpandedSubMenu('pictures')}
-            onBlur={() => setExpandedSubMenu(null)}
-            tabIndex={0}
+            // onMouseEnter={() => setExpandedSubMenu('pictures')}
+            // onMouseLeave={() => setExpandedSubMenu(null)}
+            // onFocus={() => setExpandedSubMenu('pictures')}
+            // onBlur={() => setExpandedSubMenu(null)}
+            // tabIndex={0}
           >
             <NavLink 
-             to={`/pictures`}
+             to={`/gallery/pictures`}
               className={linkClassName} 
-              onClick={(e) => e.preventDefault()} 
+              // onClick={(e) => e.preventDefault()} 
             >
               Pictures
             </NavLink>
 
-            <div
+            {/* <div
               className={`transition-all absolute top-0 -left-24 w-fit bg-black z-20 duration-500 origin-top 
                 ${expandedSubMenu === 'pictures' ? 'rotateX(0deg) max-h-screen opacity-100' : 'rotateX(-90deg) max-h-0 opacity-0'}`}
               style={{
@@ -434,7 +438,7 @@ const Navbar = () => {
                   </NavLink>
                 </li>
               </ul>
-            </div>
+            </div> */}
           </li>
           <li>
             <NavLink to="/gallery/news" className={linkClassName} onClick={toggleNavbar}>

@@ -1,8 +1,8 @@
 import { defineType, defineField } from "sanity";
 
 export default defineType({
-  name: 'PeaceAndSecurityBookLink',
-  title: 'Peace And Security Book Link',
+  name: 'TextBooksWritingsLinks',
+  title: 'Titles of TextBooks and Embedded Links for textbooks written by the author of this website',
   type: 'document',
   fields: [
     defineField({
@@ -30,7 +30,7 @@ export default defineType({
           ],
         },
       ],
-      validation: (Rule) => Rule.required().min(1), // Ensure at least one item is present
+      validation: (Rule) => Rule.required().min(1), 
     }),
   ],
 });

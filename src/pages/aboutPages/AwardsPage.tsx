@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'; 
 import HonorsComponent from '../../components/HonorsComponent';
-import { LoaderFunction, useLoaderData } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
 import { fetchAwardsPageInput, fetchAwardsPageHeroImage } from '../../../sanityApiClient/useSanityClient';
 import { useAuthorContext } from '../../hooks/AuthorContext';
 import WholePageSpinner from '../../components/WholePageSpinner';
 import { urlFor } from '../../../sanityApiClient/sanityClient';
+
 
 interface ImageAsset {
   _id: string;
@@ -28,23 +29,28 @@ interface AwardsPageData {
   awardsPageHeroImage: AwardsPageHeroImageData[];
 }
 
-export const awardsPageLoader: LoaderFunction = async () => {
-  try {
+// Main component
+const AwardsPage: React.FC = () => {
+  
+  const fetchAwardsPageData = async (): Promise<AwardsPageData> => {
     const awardsPageInput = await fetchAwardsPageInput();
     const awardsPageHeroImage = await fetchAwardsPageHeroImage();
 
-    return {
-      awardsPageInput,
-      awardsPageHeroImage,
-    };
-  } catch (error) {
-    console.error('Failed to load awards page data:', error);
-    throw new Response('Failed to load awards page data', { status: 500 });
-  }
-};
+    if (!awardsPageInput || awardsPageInput.length === 0) {
+      throw new Error('Awards Page input not found');
+    }
+    if (!awardsPageHeroImage || awardsPageHeroImage.length === 0) {
+      throw new Error('Hero image not found');
+    }
 
-const AwardsPage: React.FC = () => {
-  const { awardsPageInput, awardsPageHeroImage } = useLoaderData() as AwardsPageData;
+    return { awardsPageInput, awardsPageHeroImage };
+  };
+
+  const { data, isLoading } = useQuery<AwardsPageData>({
+    queryKey: ['awardsPageData'],  // Updated the query key to match the correct data
+    queryFn: fetchAwardsPageData,
+  });
+
   const { authorName } = useAuthorContext();
   
   const [awardsPageHeroImageUrl, setAwardsPageHeroImageUrl] = useState('');
@@ -53,9 +59,10 @@ const AwardsPage: React.FC = () => {
   useEffect(() => {
     document.title = `Awards And Scholarships - ${authorName}`;
 
-    if (awardsPageHeroImage.length > 0) {
+ 
+    if (data?.awardsPageHeroImage && data.awardsPageHeroImage.length > 0) {
       const img = new Image();
-      const imgUrl = urlFor(awardsPageHeroImage[0].image.asset._id)  
+      const imgUrl = urlFor(data.awardsPageHeroImage[0].image.asset._id)
         .width(1920)
         .quality(80)
         .format('webp')
@@ -68,32 +75,30 @@ const AwardsPage: React.FC = () => {
         setIsImageLoaded(true);
       };
 
-    
       return () => {
         img.onload = null;
       };
     }
-  }, [authorName, awardsPageHeroImage]);
+  }, [authorName, data]);
 
-  if (!isImageLoaded) {
-    return (
-      <div className='z-[999]'>
-        <WholePageSpinner />
-      </div>
-    );
+  if (isLoading || !isImageLoaded) {
+    return <WholePageSpinner />;
   }
 
   return (
     <section>
-      <div className='md:w-[85%] mx-auto px-4 md:px-6 py-8'>
-        <HonorsComponent
-          title={'Awards and Recognitions'}
-          imgUrl={awardsPageHeroImageUrl}
-          listData={awardsPageInput[0].details}
-        />
+      <div className="md:w-[85%] mx-auto px-4 md:px-6 py-8">
+       
+        {data && (
+          <HonorsComponent
+            title={'Awards and Recognitions'}
+            imgUrl={awardsPageHeroImageUrl}
+            listData={data.awardsPageInput[0]?.details} 
+          />
+        )}
       </div>
     </section>
   );
-}
+};
 
 export default AwardsPage;

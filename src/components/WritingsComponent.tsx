@@ -27,6 +27,7 @@ const WritingsComponent: React.FC<Partial<WritingsProps>> = ({ title, linksData,
   const [loadedImagesCount, setLoadedImagesCount] = useState(0);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const totalImages = booksData ? booksData.length : 0;
+  console.log(booksData)
 
   useEffect(() => {
     const handleImageLoad = () => {
@@ -34,12 +35,13 @@ const WritingsComponent: React.FC<Partial<WritingsProps>> = ({ title, linksData,
     };
 
     if (booksData) {
+      console.log(booksData)
       const urls = booksData.map(bookData =>
-        urlFor(bookData.image.asset._id).width(1920).quality(80).format('webp').url()
+        urlFor(bookData.image.asset._id).width(1920).quality(75).format('webp').url()
       );
       setImageUrls(urls);
 
-     
+    
       urls.forEach(url => {
         const img = new Image();
         img.src = url;

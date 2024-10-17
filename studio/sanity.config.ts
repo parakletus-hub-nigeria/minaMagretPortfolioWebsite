@@ -11,6 +11,7 @@ export default defineConfig({
   dataset: 'production',
 
   plugins: [structureTool(), visionTool()],
+  studioHost: 'ikay-client',
 
   schema: {
     types: schemaTypes,

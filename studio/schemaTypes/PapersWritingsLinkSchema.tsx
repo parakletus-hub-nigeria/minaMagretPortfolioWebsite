@@ -1,8 +1,8 @@
 import { defineType, defineField } from "sanity";
 
 export default defineType({
-  name: 'WomenAndGirlsBookLink',
-  title: 'Women And Girls Book Link',
+  name: 'PapersWritingsLinks',
+  title: 'Title and Embedded links of Papers written by the author of this website',
   type: 'document',
   fields: [
     defineField({

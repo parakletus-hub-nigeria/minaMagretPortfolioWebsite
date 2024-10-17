@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, LoaderFunction, useLoaderData } from 'react-router-dom';
 import { MdOutlineKeyboardArrowUp } from "react-icons/md";
-import Navbar from '../components/Navbar'; // Adjust the path as needed
+import Navbar from '../components/Navbar';
 import { fetchBackgroundImage } from '../../sanityApiClient/useSanityClient';
 import Footer from '../components/Footer';
-import { urlFor } from '../../sanityApiClient/sanityClient'; // Ensure you import the urlFor function
+import { urlFor } from '../../sanityApiClient/sanityClient'; 
+import {motion} from 'framer-motion';
 
 
 interface BackgroundImageAsset {
@@ -24,6 +25,11 @@ interface LayoutLoaderData {
   backgroundImage: BackgroundImage[]; 
 }
 
+interface MousePosition {
+  x: number;
+  y: number;
+}
+  
 export const LayoutLoader: LoaderFunction = async () => {
   try {
     const backgroundImage = await fetchBackgroundImage();
@@ -42,21 +48,44 @@ const Layout: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showScrollToTop, setShowScrollToTop] = useState(false);
   const [backgroundImageUrl, setBackgroundImageUrl] = useState('');
-
+  const [trackMousePosition, setTrackMousePosition] = useState<MousePosition>({
+    x: 0,
+    y: 0,
+  });
   const { backgroundImage } = useLoaderData() as LayoutLoaderData;
+
+
+  const mouseMoveFunction = (event: MouseEvent) => {
+    requestAnimationFrame(() => {
+      setTrackMousePosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+    });
+  };
+
+   
+ 
+ 
+  const variants = {
+    default: {
+      x: trackMousePosition.x - 16,
+      y: trackMousePosition.y - 16,
+      transition: {
+        ease: 'easeOut',
+        duration: 0.05,
+      },
+    },
+  };
 
   useEffect(() => {
  
     const bgImageUrl = urlFor(backgroundImage[0]?.image?.asset?._id).quality(75).format('webp').url();
     setBackgroundImageUrl(bgImageUrl);
-
+    window.addEventListener('mousemove', mouseMoveFunction);
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-
-   
       setIsScrolled(scrollTop > 40);
-
- 
       setShowScrollToTop(scrollTop > 200);
     };
 
@@ -64,6 +93,7 @@ const Layout: React.FC = () => {
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', mouseMoveFunction);
     };
   }, [backgroundImage]);
 
@@ -99,7 +129,14 @@ const Layout: React.FC = () => {
     <main className="relative  mx-auto max-w-[1200px] p-4 pb-16">
       <Outlet />
     </main>
-  
+
+ 
+    <motion.div
+          className='cursor bg-[#1111] w-12 h-12 rounded-full border-2 border-blue-500 fixed top-0 left-0 z-[999] pointer-events-none'
+          variants={variants}
+          animate="default"
+        />
+
     {showScrollToTop && (
       <button
         onClick={scrollToTop}

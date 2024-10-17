@@ -24,7 +24,7 @@ export default defineType({
             }),
         },
       ],
-      validation: (Rule) => Rule.required().min(1), // At least one YouTube link is required
+      validation: (Rule) => Rule.required().min(1),
     }),
   ],
 });

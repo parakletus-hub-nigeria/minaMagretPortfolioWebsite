@@ -1,26 +1,12 @@
 import {sanityClient} from './sanityClient';
 
-// export const fetchBackgroundImage = async () => {
-//   const query = '*[_type == "MainBackgroundImage"]{image{asset->{_id, url}}}';
-//   const data = await sanityClient.fetch(query);
-//   return data;
-// };
-
-
-// export const fetchHomePageHeroImage = async () => {
-//   const query = '*[_type == "HomePageHeroImage"]{image{asset->{_id, url}}}';
-//   const data = await sanityClient.fetch(query);
-//   return data;
-// };
-
-// Fetch only the necessary details to construct the background image URL
 export const fetchBackgroundImage = async () => {
   const query = '*[_type == "MainBackgroundImage"]{image{asset->{_id}}}';
   const data = await sanityClient.fetch(query);
   return data; 
 };
 
-// Fetch only the necessary details to construct the home page hero image URL
+
 export const fetchHomePageHeroImage = async () => {
   const query = '*[_type == "HomePageHeroImage"]{image{asset->{_id}}}';
   const data = await sanityClient.fetch(query);
@@ -104,15 +90,15 @@ export const  fetchFellowshipsAndRecognitionsPageInput = async () => {
 
 
 
-export const fetchLawAndHumanRightsImageBookLinks = async () => {
-  const query = `*[_type == "LawAndHumanRightsImageBookLink"]{title, url , image { asset -> { _id, url } }}`;
+export const fetchManualsImageWritingsLinks = async () => {
+  const query = `*[_type == "ManualsImageWritingsLinks"]{title, url , image { asset -> { _id} }}`;
   const data = await sanityClient.fetch(query);
   return data;
 };
 
 
-export const fetchLawAndHumanRightsBookLinks = async () => {
-  const query = `*[_type == "LawAndHumanRightsBookLink"]{
+export const fetchManualsWritingsLinks = async () => {
+  const query = `*[_type == "ManualsWritingsLinks"]{
   items[]{
     title,
     url
@@ -123,44 +109,44 @@ export const fetchLawAndHumanRightsBookLinks = async () => {
 };
 
 
+export const fetchPapersImageWritingsLinks = async () => {
+  const query = `*[_type == "PapersImageWritingsLinks"]{
+    title, 
+    url, 
+    image { 
+      asset -> { _id} 
+    }
+  }`;
 
-export const fetchWomenAndGirlsImageBookLinks = async () => {
-  const query = `*[_type == "WomenAndGirlsImageBookLink"]{title, url , image { asset -> { _id, url } }}`;
   const data = await sanityClient.fetch(query);
-
-   return data;
+  return data;
 };
 
 
-export const fetchWomenAndGirlsBookLinks = async () => {
-  const query = `*[_type == "WomenAndGirlsBookLink"]{
+
+export const fetchPapersWritingsLinks = async () => {
+  const query = `*[_type == "PapersWritingsLinks"]{
   items[]{
     title,
     url
   }
 }`;
   const data = await sanityClient.fetch(query);
- 
   return data;
 };
 
 
 
 
-
-
-
-
-
-export const fetchPeaceAndSecurityImageBookLinks = async () => {
-  const query = `*[_type == "PeaceAndSecurityImageBookLink"]{title, url , image { asset -> { _id, url } }}`;
+export const fetchTextBooksImageWritingsLinks = async () => {
+  const query = `*[_type == "TextbooksImageWritingsLinks"]{title, url , image { asset -> { _id, url } }}`;
   const data = await sanityClient.fetch(query);
   return data;
 };
 
 
-export const fetchPeaceAndSecurityBookLinks = async () => {
-  const query = `*[_type == "PeaceAndSecurityBookLink"]{
+export const fetchTextBooksWritingsLinks = async () => {
+  const query = `*[_type == "TextBooksWritingsLinks"]{
   items[]{
     title,
     url

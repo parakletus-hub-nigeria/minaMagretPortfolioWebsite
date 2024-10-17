@@ -1,8 +1,8 @@
 import { defineType, defineField } from 'sanity';
 
 export default defineType({
-  name: 'WomenAndGirlsImageBookLink',
-  title: 'Women And Girls Image Book Link',
+  name: 'ManualsImageWritingsLinks',
+  title: 'Images with embedded Links of the manuals written by the author of this website',
   type: 'document',
   fields: [
     defineField({
@@ -17,7 +17,7 @@ export default defineType({
       type: 'image',
       options: {
         hotspot: true, 
-            },
+      },
       validation: (Rule) => Rule.required(),
     }),
     defineField({

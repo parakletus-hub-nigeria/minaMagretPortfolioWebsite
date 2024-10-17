@@ -10,16 +10,16 @@ import FellowshipsAndSchloarshipsPageHeroImage from './FellowshipsAndSchloarship
 import FellowshipsAndSchloarshipsPageInputSchema from './FellowshipsAndSchloarshipsPageInputSchema';
 import AwardsAndRecognitionsPageHeroImage from './AwardsAndRecognitionsPageHeroImage';
 import AwardsAndRecognitionsPageInputSchema from './AwardsAndRecognitionsPageInputSchema';
-import LawAndHumanRightsImageBookLink from './LawAndHumanRightsImageBookLinkSchema';
-import LawAndHumanRightsBookLink from './LawAndHumanRightsBookLinkSchema';
-import PeaceAndSecurityBookLink from './PeaceAndSecurityBookLinkSchema';
-import PeaceAndSecurityImageBookLink  from './PeaceAndSecurityImageBookLinkSchema';
-import WomenAndGirlsBookLink from './WomenAndGirlsBookLinkSchema';
-import WomenAndGirlsImageBookLink from './WomenAndGirlsImageBookLinkSchema';
 import Videos from './VideosSchema';
 import PortraitPictures from './PortraitPicturesSchema';
 import NewsLink from './NewsLinksSchema';
 import Socials from './SocialsSchema';
+import ManualsWritings from './ManualsWritingsLinkSchema';
+import ManualsImagesWritings from './ManualsImagesWritingsLinkSchema';
+import PapersImageWritings from './PapersImageWritingsSchema';
+import PapersWritings from './PapersWritingsLinkSchema';
+import TextbooksWritings from './TextbooksWritingsSchema';
+import TextBooksImageWritings from './TextBooksImageWritingsSchema';
 
 export const schemaTypes = 
 [Author,
@@ -34,12 +34,12 @@ export const schemaTypes =
    FellowshipsAndSchloarshipsPageInputSchema, 
    AwardsAndRecognitionsPageHeroImage, 
    AwardsAndRecognitionsPageInputSchema,
-   LawAndHumanRightsImageBookLink,
-   LawAndHumanRightsBookLink,
-PeaceAndSecurityBookLink,
-PeaceAndSecurityImageBookLink,
-WomenAndGirlsBookLink,
-WomenAndGirlsImageBookLink,
+   ManualsWritings,
+    ManualsImagesWritings,
+    PapersImageWritings,
+    PapersWritings,
+    TextbooksWritings,
+    TextBooksImageWritings,
 Videos,
 PortraitPictures,
 NewsLink,
