@@ -113,12 +113,13 @@ const HomePage: React.FC = () => {
 
             <div className='absolute bottom-[35%] md:bottom-0 md:left-4 md:relative md:h-full flex justify-center items-center w-full md:w-1/2'>
               <div className='flex flex-col items-center md:items-start text-center md:text-left gap-6 p-4 md:p-8 playfair'>
-                <h2 className='text-white text-3xl md:text-4xl lg:text-5xl font-semibold leading-10'>
+                {/* <h2 className='text-gray-200 text-3xl md:text-4xl lg:text-5xl font-semibold leading-10'> */}
+                <h2 style="color: #E5E7EB; font-size: 1.875rem; line-height: 2.5rem; font-weight: 600;">
                   Meet {authorName}
                 </h2>
                 <Link
                   to={`/about/profile`}
-                  className='font-bold text-white text-lg md:text-xl flex items-center bg-[#49A3AC] py-3 px-6 rounded-md hover:animate-pulse'
+                  className='font-bold text-gray-200 text-lg md:text-xl flex items-center bg-[#49A3AC] py-3 px-6 rounded-md hover:animate-pulse'
                   aria-label="Learn more about the author"
                 >
                   <p>Dive In</p>
