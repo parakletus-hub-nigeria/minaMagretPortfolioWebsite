@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /public/
+Allow: /
+Allow: /images/
+Allow: /static/
+Sitemap: https://minaogbanga.com/sitemap.xml

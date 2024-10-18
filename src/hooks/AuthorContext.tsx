@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAuthorDetails } from '../../sanityApiClient/useSanityClient'; 
+import { urlFor } from '../../sanityApiClient/sanityClient';
 
 interface Author {
   author: string;
@@ -44,7 +45,7 @@ export const AuthorContextProvider: React.FC<{ children: React.ReactNode }> = ({
     if (data && data.length > 0) {
       const fetchedAuthor = data[0];
       const name = fetchedAuthor.author;
-      const logoUrl = fetchedAuthor.logo.asset.url;
+      const logoUrl = urlFor(fetchedAuthor.logo.asset._id).width(120).quality(80).format('webp').url();
 
       // Check and compare Compare with stored values
       if (name !== storedName || logoUrl !== storedLogoUrl) {

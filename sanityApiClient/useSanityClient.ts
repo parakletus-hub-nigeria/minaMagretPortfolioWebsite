@@ -17,7 +17,7 @@ export const fetchHomePageHeroImage = async () => {
 
 
 export const fetchAuthorDetails = async () => {
-  const query = `*[_type == "Author"]{author,logo { asset -> { _id, url } }}`;
+  const query = `*[_type == "Author"]{author,logo { asset -> { _id } }}`;
   const data = await sanityClient.fetch(query);
     return data;
 };

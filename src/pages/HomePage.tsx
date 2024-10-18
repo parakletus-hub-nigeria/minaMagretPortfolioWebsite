@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../assets/styles/App.css';
@@ -9,7 +8,7 @@ import { useAuthorContext } from '../hooks/AuthorContext';
 import { urlFor } from '../../sanityApiClient/sanityClient';
 import WholePageSpinner from '../components/WholePageSpinner';
 
-// Combined fetching function
+
 const fetchImages = async () => {
   const [backgroundImage, homePageHeroImage] = await Promise.all([
     fetchBackgroundImage(),
@@ -34,7 +33,7 @@ const HomePage: React.FC = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['images'],
     queryFn: fetchImages,
-    staleTime: 0, 
+
   });
 
   const [isImagesLoaded, setIsImagesLoaded] = useState(false);
@@ -60,7 +59,7 @@ const HomePage: React.FC = () => {
 
       setBackgroundImgUrl(bgUrl);
       setHeroImgUrl(heroUrl);
-
+console.log(heroImgUrl);
    
       const preloadImages = (srcArray: string[], callback: () => void) => {
         let loadedCount = 0;
@@ -86,6 +85,8 @@ const HomePage: React.FC = () => {
     return <WholePageSpinner />;
   }
 
+
+
   return (
     <section>
       <div className='flex flex-col montserrat min-h-screen w-screen relative overflow-hidden'>
@@ -108,14 +109,14 @@ const HomePage: React.FC = () => {
               <img
                 srcSet={`
                   ${heroImgUrl} 1920w,
-                  ${urlFor(data?.homePageHeroImage[0]?.image?.asset?._id).width(768).quality(80).format('webp').url()} 768w,
-                  ${urlFor(data?.homePageHeroImage[0]?.image?.asset?._id).width(480).quality(80).format('webp').url()} 480w
+                  ${urlFor(data?.homePageHeroImage[0]?.image?.asset?._id).width(768).quality(75).format('webp').url()} 768w,
+                  ${urlFor(data?.homePageHeroImage[0]?.image?.asset?._id).width(480).quality(75).format('webp').url()} 480w
                 `}
                 sizes="(max-width: 480px) 480px, (max-width: 768px) 768px, 1920px"
                 src={heroImgUrl}
                 alt={`Portrait of ${authorName}`}
                 className='w-full h-full object-cover'
-                loading="lazy"
+                loading="eager"
               />
             </picture>
 
