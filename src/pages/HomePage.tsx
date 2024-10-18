@@ -8,7 +8,6 @@ import { useAuthorContext } from '../hooks/AuthorContext';
 import { urlFor } from '../../sanityApiClient/sanityClient';
 import WholePageSpinner from '../components/WholePageSpinner';
 
-
 const fetchImages = async () => {
   const [backgroundImage, homePageHeroImage] = await Promise.all([
     fetchBackgroundImage(),
@@ -25,15 +24,12 @@ const fetchImages = async () => {
   return { backgroundImage, homePageHeroImage };
 };
 
-
 const HomePage: React.FC = () => {
   const { authorName } = useAuthorContext();
-
 
   const { data, isLoading } = useQuery({
     queryKey: ['images'],
     queryFn: fetchImages,
-
   });
 
   const [isImagesLoaded, setIsImagesLoaded] = useState(false);
@@ -41,10 +37,8 @@ const HomePage: React.FC = () => {
   const [heroImgUrl, setHeroImgUrl] = useState('');
 
   useEffect(() => {
-   
     document.title = `Homepage - ${authorName}`;
 
-  
     if (data) {
       const bgUrl = urlFor(data.backgroundImage[0]?.image?.asset?._id)
         .width(1920)
@@ -59,8 +53,7 @@ const HomePage: React.FC = () => {
 
       setBackgroundImgUrl(bgUrl);
       setHeroImgUrl(heroUrl);
-console.log(heroImgUrl);
-   
+
       const preloadImages = (srcArray: string[], callback: () => void) => {
         let loadedCount = 0;
         srcArray.forEach((src) => {
@@ -85,8 +78,6 @@ console.log(heroImgUrl);
     return <WholePageSpinner />;
   }
 
-
-
   return (
     <section>
       <div className='flex flex-col montserrat min-h-screen w-screen relative overflow-hidden'>
@@ -107,12 +98,12 @@ console.log(heroImgUrl);
           <div className='flex flex-col md:flex-row justify-center items-center h-full relative z-10'>
             <picture className='w-full h-full md:w-1/2'>
               <img
-                srcSet={`
-                  ${heroImgUrl} 1920w,
+                srcSet={` 
+                  ${heroImgUrl} 1920w, 
                   ${urlFor(data?.homePageHeroImage[0]?.image?.asset?._id).width(768).quality(75).format('webp').url()} 768w,
                   ${urlFor(data?.homePageHeroImage[0]?.image?.asset?._id).width(480).quality(75).format('webp').url()} 480w
                 `}
-                sizes="(max-width: 480px) 480px, (max-width: 768px) 768px, 1920px"
+                sizes="(max-width: 768px) 480px, 1920px"
                 src={heroImgUrl}
                 alt={`Portrait of ${authorName}`}
                 className='w-full h-full object-cover'
