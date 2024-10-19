@@ -113,8 +113,8 @@ const HomePage: React.FC = () => {
 
             <div className='absolute bottom-[35%] md:bottom-0 md:left-4 md:relative md:h-full flex justify-center items-center w-full md:w-1/2'>
               <div className='flex flex-col items-center md:items-start text-center md:text-left gap-6 p-4 md:p-8 playfair'>
-                {/* <h2 className='text-gray-200 text-3xl md:text-4xl lg:text-5xl font-semibold leading-10'> */}
-                <h2 style={{ color: '#E5E7EB', fontSize: '1.875rem', lineHeight: '2.5rem', fontWeight: 600 }}>
+                <h2 className='text-gray-200 text-3xl md:text-4xl lg:text-5xl font-semibold leading-10'>
+            
                   Meet {authorName}
                 </h2>
                 <Link
