@@ -132,10 +132,11 @@ const Layout: React.FC = () => {
 
  
     <motion.div
-          className='cursor bg-[#1111] w-12 h-12 rounded-full border-2 border-blue-500 hidden md:fixed top-0 left-0 z-[999] pointer-events-none'
-          variants={variants}
-          animate="default"
-        />
+  className="cursor bg-[#1111] w-12 h-12 rounded-full border-2 border-blue-500 hidden md:fixed top-0 left-0 z-[999] pointer-events-none"
+  variants={variants}
+  animate="default"
+/>
+
 
     {showScrollToTop && (
       <button
