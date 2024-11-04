@@ -21,7 +21,11 @@ const DropdownComponent: React.FC<DropdownProps> = ({ title, content, isActive, 
           <span className={`transform transition-transform ${isActive ? "rotate-90" : ""}`}>
             <IoIosPlay />
           </span>
-          <span>{title}</span>
+          <span>
+            <h2 className="text-left">
+            {title}
+            </h2>
+            </span>
         </div>
       </button>
 
