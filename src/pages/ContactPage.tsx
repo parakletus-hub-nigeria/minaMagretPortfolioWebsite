@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import {
   FaFacebookF,
   FaInstagram,
@@ -6,7 +6,9 @@ import {
   FaTwitter,
   FaEnvelope,
   FaSnapchat,
-  FaResearchgate, // Using the ResearchGate icon from FontAwesome
+  FaResearchgate,
+  FaTelegramPlane,
+  FaWhatsapp,
 } from "react-icons/fa";
 // Importing specific icons for Academia and Google Scholar
 import { SiAcademia, SiGooglescholar } from "react-icons/si";
@@ -26,6 +28,8 @@ export interface SocialLinks {
   researchgate?: string;
   academiaEdu?: string;
   googlescholar?: string;
+  telegram?: string;
+  whatsapp?: string;
 }
 
 const fetchSocialLinksData = async (): Promise<SocialLinks[]> => {
@@ -171,6 +175,36 @@ const ContactPage: React.FC = () => {
                 {link.email && (
                   <a href={`mailto:${link.email}`}>
                     <FaEnvelope
+                      size={48}
+                      className="text-white p-2 bg-[#17a2b8] rounded-lg hover:bg-[#138496] transition-colors"
+                    />
+                  </a>
+                )}
+
+                {/* --- Telegram --- */}
+                {link.telegram && (
+                  <a
+                    href={link.telegram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Telegram"
+                  >
+                    <FaTelegramPlane
+                      size={48}
+                      className="text-white p-2 bg-[#17a2b8] rounded-lg hover:bg-[#138496] transition-colors"
+                    />
+                  </a>
+                )}
+
+                {/* --- WhatsApp Channel --- */}
+                {link.whatsapp && (
+                  <a
+                    href={link.whatsapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="WhatsApp Channel"
+                  >
+                    <FaWhatsapp
                       size={48}
                       className="text-white p-2 bg-[#17a2b8] rounded-lg hover:bg-[#138496] transition-colors"
                     />

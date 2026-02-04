@@ -64,6 +64,23 @@ export default defineType({
       type: 'url',
       validation: (Rule) => Rule.uri({scheme: ['http', 'https']}),
     }),
+    // WhatsApp Channel
+    defineField({
+      name: 'whatsapp',
+      title: 'WhatsApp Channel',
+      type: 'url',
+      description: 'Enter the link to your WhatsApp Channel',
+      validation: (Rule) => Rule.uri({scheme: ['http', 'https']}),
+    }),
+
+    // Telegram Link
+    defineField({
+      name: 'telegram',
+      title: 'Telegram URL',
+      type: 'url',
+      description: 'Enter your Telegram profile or channel URL',
+      validation: (Rule) => Rule.uri({scheme: ['http', 'https']}),
+    }),
   ],
   preview: {
     select: {
@@ -72,13 +89,16 @@ export default defineType({
       instagram: 'instagram',
       twitter: 'twitter',
       snapchat: 'snapchat',
+      telegram: 'telegram',
+      whatsapp_channel: 'whatsapp',
       email: 'email',
     },
     prepare(selection) {
-      const {facebook, linkedin, instagram, twitter, snapchat, email} = selection
+      const {facebook, linkedin, instagram, twitter, snapchat, telegram, whatsapp_channel, email} =
+        selection
       return {
         title: 'Social Links',
-        subtitle: `FB: ${facebook}, LI: ${linkedin}, IG: ${instagram}, TW: ${twitter}, SC: ${snapchat}, Email: ${email}`,
+        subtitle: `FB: ${facebook}, LI: ${linkedin}, IG: ${instagram}, TW: ${twitter}, SC: ${snapchat},TL: ${telegram},WC: ${whatsapp_channel} Email: ${email}`,
       }
     },
   },
