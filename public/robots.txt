@@ -1,6 +1,73 @@
+# Robots.txt for Professor Mina Margaret Ogbanga Portfolio (minaogbanga.com)
+# Configured for maximum visibility across traditional search engines and AI agents
+
 User-agent: *
-Allow: /public/
 Allow: /
-Allow: /images/
+Allow: /about/
+Allow: /writings/
+Allow: /gallery/
+Allow: /blog
+Allow: /contact
+Allow: /public/
 Allow: /static/
+Allow: /llms.txt
+
+# Googlebot & Google AI Crawlers (Search & Gemini)
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Perplexity AI Crawlers
+User-agent: PerplexityBot
+Allow: /
+
+# Anthropic Claude Crawlers
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# OpenAI ChatGPT & Search Crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+# Moonshot AI / Kimi Crawlers
+User-agent: KimiBot
+Allow: /
+
+User-agent: MoonshotBot
+Allow: /
+
+# Apple, Meta, ByteDance & Cohere Crawlers
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+# Sitemaps
 Sitemap: https://minaogbanga.com/sitemap.xml

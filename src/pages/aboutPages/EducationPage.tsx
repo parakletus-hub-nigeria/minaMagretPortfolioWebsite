@@ -49,19 +49,26 @@ const fetchEducationPageData = async (): Promise<EducationPageData> => {
 
 const EducationPage: React.FC = () => {
   const { authorName } = useAuthorContext();
+  const displayName = authorName || 'Professor Mina Margaret Ogbanga';
+
   const { data, isLoading } = useQuery<EducationPageData>({
     queryKey: ['educationPageData'],
     queryFn: fetchEducationPageData,
   });
 
   const [activeDropdowns, setActiveDropdowns] = useState<boolean[]>([]);
-  const [educationPageHeroImageUrl, setEducationPageHeroImageUrl] = useState('');
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
+  const heroAssetId = data?.educationPageHeroImage?.[0]?.image?.asset?._id;
+  const educationPageHeroImageUrl = heroAssetId
+    ? urlFor(heroAssetId).width(1200).quality(85).format('webp').url()
+    : '';
 
   useEffect(() => {
     if (data && data.educationPageInput) {
-      setActiveDropdowns(new Array(data.educationPageInput.length).fill(false));
+      // By default open the first institution (e.g. Cambridge / Harvard)
+      const initial = new Array(data.educationPageInput.length).fill(false);
+      if (initial.length > 0) initial[0] = true;
+      setActiveDropdowns(initial);
     }
   }, [data]);
 
@@ -72,60 +79,59 @@ const EducationPage: React.FC = () => {
   };
 
   useEffect(() => {
-    document.title = `Education - ${authorName}`;
+    document.title = `Education & Credentials - ${displayName}`;
+  }, [displayName]);
 
-    if (data && data.educationPageHeroImage) {
-      const imgUrl = urlFor(data.educationPageHeroImage[0].image.asset._id)
-        .width(1920)
-        .quality(80)
-        .format('webp')
-        .url();
-
-      const img = new Image();
-      img.src = imgUrl;
-
-      img.onload = () => {
-        setEducationPageHeroImageUrl(img.src);
-        setIsImageLoaded(true);
-      };
-    }
-
-
-
-  }, [data, authorName]);
-
-
-  if (isLoading || !isImageLoaded) {
+  if (isLoading) {
     return <WholePageSpinner />;
   }
 
   return (
-    <section>
-      <div className="flex flex-col md:flex-row items-start md:w-[85%] mx-auto px-4 md:px-6 py-8 md:py-16">
-        <picture className="relative md:sticky md:top-0 md:max-h-[560px]">
-          <img
-            src={educationPageHeroImageUrl}
-            className="w-full h-full md:max-h-[560px] md:max-w-[371px]"
-            alt={`Portrait of ${authorName}`}
-          />
-        </picture>
+    <section className="py-8 md:py-12 font-sans">
+      <div className="md:w-[92%] lg:w-[88%] mx-auto px-4 md:px-6">
+        {/* Header */}
+        <header className="mb-10 pb-6 border-b border-slate-800 text-left">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xs uppercase tracking-widest text-blue-400 font-semibold bg-blue-950/60 px-3 py-1 rounded-full border border-blue-800/40">
+              Academic Qualifications & Pedagogy
+            </span>
+          </div>
+          <h1 className="text-white text-3xl md:text-5xl font-bold font-serif tracking-tight">
+            Education & Executive Studies
+          </h1>
+          <p className="mt-2 text-slate-300 text-sm md:text-base max-w-2xl leading-relaxed">
+            University of Cambridge, Harvard University, and doctoral research in sustainable development.
+          </p>
+        </header>
 
-        <div className="w-full md:w-3/4 md:ml-8">
-          <span className="flex flex-col gap-2 pb-6 capitalize text-left font-bold text-white border-b border-white">
-            <h2 className="text-2xl">About Me</h2>
-            <h1 className="text-4xl">Education</h1>
-          </span>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Left Column: Portrait */}
+          {educationPageHeroImageUrl && (
+            <div className="lg:col-span-5 space-y-4">
+              <div className="rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 shadow-2xl">
+                <img
+                  src={educationPageHeroImageUrl}
+                  alt={`Portrait of ${displayName}`}
+                  loading="lazy"
+                  className="w-full h-auto object-cover max-h-[620px]"
+                />
+              </div>
+            </div>
+          )}
 
-          <div className="w-full mt-8 flex flex-col gap-2">
-            {data?.educationPageInput.map((item, index) => (
-              <DropdownComponent
-                key={item._id}
-                title={item.placeOfStudy}
-                content={item.details}
-                isActive={activeDropdowns[index]}
-                onToggle={() => handleToggle(index)}
-              />
-            ))}
+          {/* Right Column: Institutions & Accordion Details */}
+          <div className={educationPageHeroImageUrl ? 'lg:col-span-7 space-y-4 text-left' : 'lg:col-span-12 space-y-4 text-left'}>
+            <div className="w-full flex flex-col gap-3">
+              {data?.educationPageInput.map((item, index) => (
+                <DropdownComponent
+                  key={item._id}
+                  title={item.placeOfStudy}
+                  content={item.details}
+                  isActive={activeDropdowns[index]}
+                  onToggle={() => handleToggle(index)}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

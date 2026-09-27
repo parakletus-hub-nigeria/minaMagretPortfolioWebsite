@@ -128,7 +128,12 @@ export const fetchPapersWritingsLinks = async () => {
   const query = `*[_type == "PapersWritingsLinks"]{
   items[]{
     title,
-    url
+    url,
+    authors,
+    year,
+    journal,
+    category,
+    doi
   }
 }`;
   const data = await sanityClient.fetch(query);

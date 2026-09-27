@@ -55,7 +55,7 @@ const TextBooksPage: React.FC = () => {
           {data && (
             <WritingsComponent
               booksData={data?.TextBooksImageWritingsData} 
-              linksData={data?.TextBooksWritingsData[0].items}
+              linksData={data?.TextBooksWritingsData?.[0]?.items || []}
               title={'Textbooks'}
             />
           )}

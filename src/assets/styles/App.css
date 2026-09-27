@@ -14,54 +14,30 @@ always show scrollbar */
 }
 
 
-.playfair{
-  font-family: "Playfair Display", serif;
-  font-optical-sizing: auto;
- 
-}
-
-
-.open-sans{
-  font-family: "Open Sans", sans-serif;
+.playfair {
+  font-family: "Playfair Display", Georgia, serif;
   font-optical-sizing: auto;
 }
 
-
-/* Navbar */
-nav {
-  font-family: 'Roboto', sans-serif;
-  
+body {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  color: #F8FAFC;
+  background-color: #070B14;
 }
 
-/* Body Text */
-p{
-  font-family: 'Open Sans', sans-serif;
- 
+h1, h2, h3 {
+  letter-spacing: -0.015em;
 }
 
 /* Links */
 a {
-  font-family: 'Lato', sans-serif;
-    
+  transition: all 0.2s ease-in-out;
 }
 
 .text-container {
-  background-color: rgba(255, 255, 255, 0.7); /* White with transparency */
+  background-color: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
   padding: 20px;
-}
-
-
-.text {
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-}
-
-
-
-.background-container{
-    background: url('../../../public/images/black-background.jpg');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
 }
 
 

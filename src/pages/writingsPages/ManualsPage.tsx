@@ -53,8 +53,8 @@ const ManualsPage: React.FC = () => {
           {
             data && (
               <WritingsComponent 
-                booksData={data?.manualsImageWritingsData} //Naming wan wound me at this point
-                linksData={data?.manualsWritingsData[0].items} 
+                booksData={data?.manualsImageWritingsData}
+                linksData={data?.manualsWritingsData?.[0]?.items || []} 
                 title={'Manuals'} 
                 />
 

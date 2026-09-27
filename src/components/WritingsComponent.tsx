@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import WholePageSpinner from './WholePageSpinner';
+import React from 'react';
 import { urlFor } from '../../sanityApiClient/sanityClient';
 
 interface LinksDataProps {
@@ -24,41 +23,11 @@ interface WritingsProps {
 }
 
 const WritingsComponent: React.FC<Partial<WritingsProps>> = ({ title, linksData, booksData }) => {
-  const [loadedImagesCount, setLoadedImagesCount] = useState(0);
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
-  const totalImages = booksData ? booksData.length : 0;
-  console.log(booksData)
-
-  useEffect(() => {
-    const handleImageLoad = () => {
-      setLoadedImagesCount((prevCount) => prevCount + 1);
-    };
-
-    if (booksData) {
-      console.log(booksData)
-      const urls = booksData.map(bookData =>
-        urlFor(bookData.image.asset._id).width(1920).quality(75).format('webp').url()
-      );
-      setImageUrls(urls);
-
-    
-      urls.forEach(url => {
-        const img = new Image();
-        img.src = url;
-        img.onload = handleImageLoad;
-        img.onerror = handleImageLoad; 
-      });
-    }
-  }, [booksData]);
-
-
-  if (loadedImagesCount < totalImages) {
-    return (
-    
-        <WholePageSpinner />
-     
-    );
-  }
+  const imageUrls = (booksData || []).map((bookData) =>
+    bookData.image?.asset?._id
+      ? urlFor(bookData.image.asset._id).width(600).quality(80).format('webp').url()
+      : ''
+  );
 
   return (
     <section>

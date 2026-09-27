@@ -4,12 +4,12 @@ import HomePage from '../pages/HomePage';
 import ProfilePage from '../pages/aboutPages/ProfilePage';
 import WorkPage from '../pages/aboutPages/WorkPage';
 import EducationPage from '../pages/aboutPages/EducationPage';
-import FellowShipSchloarshipPage from '../pages/aboutPages/FellowShipSchloarshipPage';
+import FellowShipScholarshipPage from '../pages/aboutPages/FellowshipScholarshipPage';
 import ManualsPage from '../pages/writingsPages/ManualsPage';
 import VideosPage from '../pages/GalleryPages/VideosPage';
 import Layout, {LayoutLoader} from './Layout';
 import AwardsPage from '../pages/aboutPages/AwardsPage';
-import PortraitsPage from '../pages/GalleryPages/PicturesPages/PotraitsPage';
+import PortraitsPage from '../pages/GalleryPages/PicturesPages/PortraitsPage';
 import NewsPage from '../pages/GalleryPages/NewsPage';
 import BlogPage from '../pages/BlogPage';
 import ContactPage from '../pages/ContactPage';
@@ -53,7 +53,11 @@ const router = createBrowserRouter([
           },
           {
             path: "fellowships-and-scholarships",
-            element: <FellowShipSchloarshipPage />,
+            element: <FellowShipScholarshipPage />,
+          },
+          {
+            path: "fellowships-and-schloarships",
+            element: <Navigate to="/about/fellowships-and-scholarships" replace={true} />,
           },
           {
             path: "awards-and-recognitions",
